@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dream Dental & Aesthetic Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+Georgian:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/lucide-static@latest/font/lucide.css" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#06070B;--bg2:#0B0D13;--bg3:#10121A;--surface:rgba(255,255,255,.035);
+  --surface2:rgba(255,255,255,.055);--surface3:rgba(255,255,255,.08);
+  --text:#F0F0F2;--text2:#8B91A0;--text3:#555B6E;
+  --accent:#0EA5E9;--accent2:#38BDF8;--accent3:#7DD3FC;
+  --accent-glow:rgba(14,165,233,.18);--accent-glow2:rgba(56,189,248,.08);
+  --gold:#F59E0B;--gold2:#FBBF24;--gold-glow:rgba(245,158,11,.15);
+  --green:#10B981;--green-glow:rgba(16,185,129,.12);
+  --border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1);--border3:rgba(255,255,255,.15);
+  --serif:'DM Serif Display',Georgia,serif;
+  --sans:'DM Sans','Noto Sans Georgian',system-ui,sans-serif;
+  --r:14px;--r2:20px;--r3:28px;
+  --ease:cubic-bezier(.16,1,.3,1);--ease2:cubic-bezier(.4,0,.2,1);
+  --space:clamp(16px,4vw,28px);
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.65;overflow-x:hidden}
+a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
+::selection{background:var(--accent);color:#fff}
+
+/* LANG */
+.i{display:none}.i.ka{display:inline}
+body.en .i{display:none}body.en .i.en{display:inline}
+body.ru .i{display:none}body.ru .i.ru{display:inline}
+body.ka .i{display:none}body.ka .i.ka{display:inline}
+[data-l]{display:none}[data-l="ka"]{display:block}
+body.en [data-l]{display:none}body.en [data-l="en"]{display:block}
+body.ru [data-l]{display:none}body.ru [data-l="ru"]{display:block}
+body.ka [data-l]{display:none}body.ka [data-l="ka"]{display:block}
+
+/* NOISE TEXTURE */
+body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:128px 128px}
+
+/* PROGRESS BAR */
+.progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));z-index:10001;width:0;transition:width .1s linear;box-shadow:0 0 12px var(--accent-glow)}
+
+/* CURSOR GLOW */
+.cursor-glow{position:fixed;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(14,165,233,.06) 0%,transparent 65%);pointer-events:none;z-index:1;transform:translate(-50%,-50%);transition:opacity .4s;opacity:0;mix-blend-mode:screen}
+body:hover .cursor-glow{opacity:1}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:10000;padding:0 var(--space);transition:all .5s var(--ease)}
+.nav.scrolled{background:rgba(6,7,11,.88);backdrop-filter:blur(32px) saturate(1.5);border-bottom:1px solid var(--border)}
+.nav-in{max-width:1200px;margin:0 auto;height:72px;display:flex;align-items:center;justify-content:space-between}
+.nav-brand{font-family:var(--serif);font-weight:400;font-size:20px;letter-spacing:-.01em;color:var(--text);transition:opacity .3s}
+.nav-r{display:flex;align-items:center;gap:4px}
+.nav-a{font-size:13px;font-weight:500;color:var(--text2);padding:8px 16px;border-radius:var(--r);transition:.3s var(--ease);letter-spacing:.01em}
+.nav-a:hover{color:var(--text);background:var(--surface2)}
+.nav-cta-btn{font-size:13px;font-weight:600;color:#fff;background:var(--accent);padding:9px 22px;border-radius:var(--r);margin-left:8px;transition:.3s var(--ease);box-shadow:0 0 20px var(--accent-glow)}
+.nav-cta-btn:hover{background:var(--accent2);transform:scale(1.03);box-shadow:0 0 30px var(--accent-glow)}
+.lang-s{display:flex;gap:2px;background:var(--surface);border-radius:12px;padding:3px;margin-left:12px;border:1px solid var(--border)}
+.lb{padding:5px 10px;border:none;background:transparent;font-size:10.5px;font-weight:700;cursor:pointer;border-radius:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;transition:.25s var(--ease)}
+.lb.on{background:var(--surface3);color:var(--text)}
+.ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;z-index:10001}
+.ham span{width:20px;height:1.5px;background:var(--text);border-radius:1px;transition:.3s var(--ease)}
+.ham.open span:nth-child(1){transform:rotate(45deg) translate(4.5px,4.5px)}.ham.open span:nth-child(2){opacity:0}.ham.open span:nth-child(3){transform:rotate(-45deg) translate(4.5px,-4.5px)}
+.mmenu{position:fixed;inset:0;background:rgba(6,7,11,.97);backdrop-filter:blur(40px);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;opacity:0;pointer-events:none;transition:opacity .4s var(--ease)}
+.mmenu.open{opacity:1;pointer-events:auto}
+.mmenu a{font-family:var(--serif);font-size:28px;color:var(--text);padding:12px 20px;transition:.3s;border-radius:var(--r)}
+.mmenu a:hover{color:var(--accent)}
+@media(max-width:768px){.nav-a,.nav-cta-btn{display:none!important}.ham{display:flex}}
+
+/* HERO */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden}
+.hero-bg{position:absolute;inset:-10%;width:120%;height:120%;will-change:transform}
+.hero-bg img{width:100%;height:100%;object-fit:cover;opacity:.2;filter:brightness(.6) contrast(1.2) saturate(.7)}
+.hero-grad{position:absolute;inset:0;background:
+  radial-gradient(ellipse at 20% 50%,rgba(14,165,233,.06) 0%,transparent 50%),
+  radial-gradient(ellipse at 80% 20%,rgba(56,189,248,.04) 0%,transparent 40%),
+  linear-gradient(to bottom,rgba(6,7,11,.2) 0%,rgba(6,7,11,.8) 55%,var(--bg) 100%)}
+
+/* Aurora blobs */
+.aurora{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.blob{position:absolute;border-radius:50%;filter:blur(100px);opacity:.1;animation:drift ease-in-out infinite}
+.blob-1{width:600px;height:600px;background:var(--accent);top:-15%;left:-8%;animation-duration:20s}
+.blob-2{width:450px;height:450px;background:#8B5CF6;bottom:5%;right:-8%;animation-duration:25s;animation-delay:-7s}
+.blob-3{width:350px;height:350px;background:#06B6D4;top:35%;left:25%;animation-duration:28s;animation-delay:-12s}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(50px,-40px) scale(1.12)}50%{transform:translate(-30px,50px) scale(.92)}75%{transform:translate(40px,25px) scale(1.06)}}
+
+.hero-c{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:0 var(--space);width:100%}
+.hero-badge{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--border2);background:var(--surface);padding:8px 20px 8px 12px;border-radius:100px;font-size:12px;font-weight:500;color:var(--text2);letter-spacing:.04em;margin-bottom:36px;backdrop-filter:blur(16px)}
+.hero-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green-glow);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.7)}}
+.hero h1{font-family:var(--serif);font-size:clamp(42px,7.5vw,92px);font-weight:400;line-height:.95;letter-spacing:-.03em;margin-bottom:32px;white-space:pre-line}
+.hero h1 em{font-style:italic;color:var(--accent);text-shadow:0 0 80px var(--accent-glow)}
+.hero-sub{color:var(--text2);font-size:17px;max-width:480px;line-height:1.75;margin-bottom:20px;font-weight:400}
+
+/* Google Rating Badge */
+.hero-rating{display:inline-flex;align-items:center;gap:12px;padding:14px 24px;background:var(--surface);border:1px solid var(--border2);border-radius:var(--r2);backdrop-filter:blur(16px);margin-bottom:36px}
+.hero-rating-score{font-family:var(--serif);font-size:32px;color:var(--text);line-height:1}
+.hero-rating-info{display:flex;flex-direction:column;gap:2px}
+.hero-rating-stars{display:flex;gap:2px}
+.hero-rating-stars svg{width:16px;height:16px}
+.hero-rating-count{font-size:11px;color:var(--text3);font-weight:500}
+.g-logo{width:16px;height:16px;margin-left:4px;vertical-align:middle;opacity:.7}
+
+.hero-acts{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 32px;border-radius:var(--r);font-size:15px;font-weight:600;border:none;cursor:pointer;font-family:var(--sans);transition:.35s var(--ease);position:relative;overflow:hidden;letter-spacing:.01em}
+.btn.primary{background:var(--accent);color:#fff;box-shadow:0 0 40px var(--accent-glow),0 4px 24px rgba(0,0,0,.3)}
+.btn.primary::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15),transparent 60%);opacity:0;transition:opacity .3s}
+.btn.primary:hover{transform:translateY(-2px);box-shadow:0 0 60px var(--accent-glow),0 8px 36px rgba(0,0,0,.4)}
+.btn.primary:hover::before{opacity:1}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border2)}
+.btn.ghost:hover{background:var(--surface2);border-color:var(--accent);transform:translateY(-1px)}
+.hero-scroll-hint{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--text3);font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:500}
+.scroll-line{width:1px;height:52px;background:linear-gradient(to bottom,var(--accent),transparent);animation:scroll-pulse 2.5s ease-in-out infinite}
+@keyframes scroll-pulse{0%{opacity:1;transform:scaleY(1)}50%{opacity:.2;transform:scaleY(.4)}100%{opacity:1;transform:scaleY(1)}}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(36px);transition:opacity .9s var(--ease),transform .9s var(--ease)}.rv.v{opacity:1;transform:none}
+.rv-l{opacity:0;transform:translateX(-44px);transition:opacity .9s var(--ease),transform .9s var(--ease)}.rv-l.v{opacity:1;transform:none}
+.rv-r{opacity:0;transform:translateX(44px);transition:opacity .9s var(--ease),transform .9s var(--ease)}.rv-r.v{opacity:1;transform:none}
+.rv-s{opacity:0;transform:scale(.88);transition:opacity .8s var(--ease),transform .8s var(--ease)}.rv-s.v{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.rv,.rv-l,.rv-r,.rv-s{opacity:1;transform:none;transition:none}}
+
+/* SECTIONS */
+.sec{max-width:1200px;margin:0 auto;padding:140px var(--space);position:relative}
+.sec-label{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.18em;color:var(--accent);margin-bottom:16px}
+.sec-label::before{content:'';width:24px;height:1px;background:var(--accent)}
+.sec-t{font-family:var(--serif);font-size:clamp(28px,4vw,52px);font-weight:400;letter-spacing:-.02em;line-height:1.1;margin-bottom:18px}
+.sec-st{font-size:15px;color:var(--text2);max-width:500px;line-height:1.75}
+.sec-divider{width:56px;height:1.5px;background:linear-gradient(90deg,var(--accent),transparent);margin-top:24px}
+
+/* STATS */
+.stats{padding:0 var(--space);position:relative;overflow:hidden}
+.stats-in{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
+.stat{text-align:center;padding:44px 20px;position:relative;transition:.3s var(--ease)}
+.stat:hover{background:var(--surface2)}
+.stat::after{content:'';position:absolute;right:0;top:20%;height:60%;width:1px;background:var(--border)}
+.stat:last-child::after{display:none}
+.stat-n{font-family:var(--serif);font-size:clamp(32px,4.5vw,56px);font-weight:400;background:linear-gradient(135deg,var(--text) 30%,var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1}
+.stat-l{font-size:12.5px;color:var(--text3);margin-top:8px;font-weight:500;letter-spacing:.03em}
+@media(max-width:600px){.stats-in{grid-template-columns:repeat(2,1fr)}.stat::after{display:none}.stat{padding:28px 16px;border-bottom:1px solid var(--border)}}
+
+/* GALLERY */
+.gal-sec{padding:140px 0;overflow:hidden;position:relative}
+.gal-header{max-width:1200px;margin:0 auto;padding:0 var(--space) 56px;display:flex;align-items:flex-end;justify-content:space-between}
+.gal-nav{display:flex;gap:8px}
+.gal-nav-btn{width:44px;height:44px;border-radius:50%;border:1px solid var(--border2);background:var(--surface);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.3s var(--ease);color:var(--text2)}
+.gal-nav-btn:hover{border-color:var(--accent);color:var(--accent);box-shadow:0 0 20px var(--accent-glow2)}
+.gal-nav-btn svg{width:18px;height:18px}
+.gal-track{display:flex;gap:16px;padding:0 var(--space);overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;cursor:grab}
+.gal-track::-webkit-scrollbar{display:none}
+.gal-track:active{cursor:grabbing}
+.gal-card{flex:0 0 clamp(280px,38vw,400px);scroll-snap-align:start;border-radius:var(--r2);overflow:hidden;position:relative;aspect-ratio:4/3;transition:.4s var(--ease);border:1px solid var(--border)}
+.gal-card:hover{transform:scale(1.02);border-color:var(--border2)}
+.gal-card img{width:100%;height:100%;object-fit:cover;transition:.6s var(--ease)}
+.gal-card:hover img{transform:scale(1.08);filter:brightness(1.1)}
+.gal-card::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(6,7,11,.5) 0%,transparent 40%);pointer-events:none}
+
+/* SERVICES */
+.svc-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-top:56px}
+.svc-c{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:32px 20px;text-align:center;transition:.4s var(--ease);position:relative;overflow:hidden;cursor:default}
+.svc-c::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,var(--accent-glow2),transparent 60%);opacity:0;transition:opacity .4s}
+.svc-c:hover{border-color:rgba(14,165,233,.3);transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,.25)}.svc-c:hover::before{opacity:1}
+.svc-icon{width:52px;height:52px;border-radius:16px;background:linear-gradient(135deg,rgba(14,165,233,.12),rgba(14,165,233,.04));border:1px solid rgba(14,165,233,.15);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;transition:.4s var(--ease);color:var(--accent)}
+.svc-icon svg{width:24px;height:24px;stroke-width:1.5}
+.svc-c:hover .svc-icon{transform:scale(1.1);background:linear-gradient(135deg,rgba(14,165,233,.2),rgba(14,165,233,.08));box-shadow:0 0 24px var(--accent-glow)}
+.svc-n{font-family:var(--serif);font-weight:400;font-size:15px;margin-bottom:6px}
+.svc-d{font-size:12px;color:var(--text3);line-height:1.55}
+
+/* REVIEWS */
+.rev-sec{padding:140px var(--space);background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 50%,var(--bg) 100%);position:relative}
+.rev-header{max-width:1200px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:20px}
+.rev-google-badge{display:flex;align-items:center;gap:14px;padding:16px 24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);backdrop-filter:blur(16px)}
+.rev-google-badge .g-icon{width:28px;height:28px}
+.rev-google-score{font-family:var(--serif);font-size:28px;line-height:1}
+.rev-google-info{display:flex;flex-direction:column;gap:2px}
+.rev-google-stars{display:flex;gap:2px}
+.rev-google-count{font-size:11px;color:var(--text3)}
+.rev-g{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;margin-top:56px}
+.rev-c{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:32px;transition:.4s var(--ease);position:relative}
+.rev-c:hover{border-color:rgba(14,165,233,.15);box-shadow:0 0 40px var(--accent-glow2);transform:translateY(-4px)}
+.rev-c .quote{position:absolute;top:16px;right:20px;font-family:var(--serif);font-size:72px;line-height:1;color:rgba(255,255,255,.03)}
+.rev-top{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.rev-av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#8B5CF6);display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--serif);font-size:17px;flex-shrink:0}
+.rev-nm{font-family:var(--serif);font-size:15px}.rev-dt{font-size:11px;color:var(--text3);margin-top:2px}
+.rev-stars{margin-left:auto;display:flex;gap:1px}
+.rev-txt{font-size:13.5px;line-height:1.9;color:var(--text2);display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
+
+/* HOURS + CONTACT */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:56px;align-items:start}
+.hrs-table{width:100%}
+.hrs-row{display:flex;justify-content:space-between;padding:15px 0;border-bottom:1px solid var(--border);transition:.25s var(--ease)}
+.hrs-row:hover{padding-left:8px;border-color:rgba(14,165,233,.15)}
+.hrs-day{font-weight:600;font-size:14px}.hrs-time{color:var(--text2);font-size:14px;font-variant-numeric:tabular-nums}
+.contact-stack{display:flex;flex-direction:column;gap:12px}
+.c-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:24px;transition:.35s var(--ease);display:flex;align-items:flex-start;gap:16px}
+a.c-card:hover{border-color:var(--accent);box-shadow:0 0 30px var(--accent-glow2);transform:translateX(4px)}
+.c-card-icon{width:40px;height:40px;border-radius:12px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--accent)}
+.c-card-icon svg{width:18px;height:18px;stroke-width:1.5}
+.c-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.12em;font-weight:700;color:var(--text3);margin-bottom:6px}
+.c-val{font-size:17px;font-weight:700;color:var(--accent)}
+.c-val-s{font-size:14px;color:var(--text2);line-height:1.5}
+.pay-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.pay-pill{font-size:10.5px;font-weight:600;color:var(--text3);background:var(--surface2);border:1px solid var(--border);padding:4px 12px;border-radius:100px}
+
+/* MAP EMBED */
+.map-wrap{margin-top:32px;border-radius:var(--r2);overflow:hidden;border:1px solid var(--border);aspect-ratio:16/9;max-height:320px;position:relative}
+.map-wrap iframe{width:100%;height:100%;border:0;filter:brightness(.85) contrast(1.1) saturate(0) invert(1) hue-rotate(180deg);opacity:.7}
+.map-overlay{position:absolute;inset:0;pointer-events:none;border-radius:var(--r2);box-shadow:inset 0 0 60px rgba(6,7,11,.4)}
+
+@media(max-width:768px){.info-grid{grid-template-columns:1fr}}
+
+/* FAQ */
+.faq-list{max-width:720px;display:flex;flex-direction:column;gap:6px;margin-top:48px}
+.faq-item{border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:.3s var(--ease)}
+.faq-item:hover{border-color:rgba(14,165,233,.15)}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:22px 28px;cursor:pointer;font-family:var(--serif);font-size:15.5px;gap:16px;transition:.2s;user-select:none}
+.faq-q:hover{color:var(--accent)}
+.faq-chev{width:18px;height:18px;flex-shrink:0;transition:.35s var(--ease);color:var(--text3)}
+.faq-item.open .faq-chev{transform:rotate(180deg);color:var(--accent)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .45s var(--ease)}
+.faq-a-in{padding:0 28px 24px;font-size:14px;line-height:1.85;color:var(--text2)}
+.faq-item.open .faq-a{max-height:400px}
+
+/* BEFORE-AFTER RIBBON */
+.ribbon{padding:100px var(--space);overflow:hidden;position:relative}
+.ribbon::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,var(--bg),var(--bg2),var(--bg))}
+.ribbon-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:56px;position:relative}
+.ribbon-text{flex:1}
+.ribbon-visual{flex:1;position:relative}
+.ribbon-box{border-radius:var(--r2);overflow:hidden;border:1px solid var(--border);aspect-ratio:16/10;transition:.4s var(--ease)}
+.ribbon-box.before{background:var(--surface);display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:14px;text-align:center;padding:24px;flex-direction:column;gap:12px}
+.ribbon-box.before svg{width:32px;height:32px;opacity:.4;stroke-width:1.5}
+.ribbon-arrow{display:flex;align-items:center;justify-content:center;padding:12px 0}
+.ribbon-arrow svg{width:28px;height:28px;color:var(--accent);animation:bounce-down 2s ease-in-out infinite}
+@keyframes bounce-down{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+.ribbon-box.after{border-color:var(--accent);box-shadow:0 0 50px var(--accent-glow),0 0 100px rgba(14,165,233,.06)}
+.ribbon-box.after img{width:100%;height:100%;object-fit:cover}
+@media(max-width:768px){.ribbon-in{flex-direction:column}}
+
+/* CTA */
+.cta{padding:140px var(--space);text-align:center;position:relative;overflow:hidden}
+.cta .aurora{z-index:0}
+.cta-in{position:relative;z-index:1;max-width:680px;margin:0 auto}
+.cta h2{font-family:var(--serif);font-size:clamp(30px,5vw,56px);font-weight:400;line-height:1.1;letter-spacing:-.02em;margin-bottom:24px}
+.cta h2 em{font-style:italic;color:var(--accent)}
+.cta p{font-size:16px;color:var(--text3);line-height:1.75;margin-bottom:48px;max-width:480px;margin-left:auto;margin-right:auto}
+.cta-acts{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+/* FLOATING CTA */
+.float-cta{position:fixed;bottom:28px;right:28px;z-index:9990;display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+.float-cta-btn{width:56px;height:56px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 24px var(--accent-glow),0 8px 40px rgba(0,0,0,.3);transition:.35s var(--ease);border:none;animation:float-pulse 3s ease-in-out infinite}
+.float-cta-btn:hover{transform:scale(1.1);box-shadow:0 4px 32px var(--accent-glow),0 12px 48px rgba(0,0,0,.4)}
+.float-cta-btn svg{width:24px;height:24px}
+@keyframes float-pulse{0%,100%{box-shadow:0 4px 24px var(--accent-glow),0 8px 40px rgba(0,0,0,.3)}50%{box-shadow:0 4px 32px rgba(14,165,233,.3),0 8px 48px rgba(0,0,0,.3)}}
+@media(max-width:768px){.float-cta{bottom:20px;right:20px}.float-cta-btn{width:52px;height:52px}}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--border);padding:48px var(--space);background:var(--bg2)}
+.footer-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
+.footer-l{display:flex;flex-direction:column;gap:6px}
+.footer-brand{font-family:var(--serif);font-size:18px;letter-spacing:-.01em}
+.footer-copy{font-size:11.5px;color:var(--text3)}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap}
+.footer-links a{font-size:13px;color:var(--text3);transition:.2s}.footer-links a:hover{color:var(--accent)}
+.footer-built{font-size:11px;color:var(--text3)}
+.footer-built a{color:var(--text2);border-bottom:1px solid var(--border);transition:.2s}.footer-built a:hover{color:var(--accent);border-color:var(--accent)}
+@media(max-width:600px){.footer-in{flex-direction:column;text-align:center;align-items:center}.footer-links{justify-content:center}}
+
+/* WHY CHOOSE US */
+.trust-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:56px}
+.trust-c{padding:32px 28px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);transition:.4s var(--ease);position:relative}
+.trust-c:hover{border-color:rgba(14,165,233,.2);transform:translateY(-3px);box-shadow:0 12px 48px rgba(0,0,0,.2)}
+.trust-c-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,rgba(14,165,233,.1),rgba(14,165,233,.03));border:1px solid rgba(14,165,233,.12);display:flex;align-items:center;justify-content:center;margin-bottom:18px;color:var(--accent)}
+.trust-c-icon svg{width:20px;height:20px;stroke-width:1.5}
+.trust-c h3{font-family:var(--serif);font-size:16px;margin-bottom:8px;font-weight:400}
+.trust-c p{font-size:13px;color:var(--text3);line-height:1.65}
+</style>
+</head>
+<body class="ka">
+
+<div class="progress" id="prog"></div>
+<div class="cursor-glow" id="glow"></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav"><div class="nav-in">
+  <a href="#" class="nav-brand">Dream Dental</a>
+  <div class="nav-r">
+    <a href="#services" class="nav-a"><span class="i ka">სერვისები</span><span class="i en">Services</span><span class="i ru">Услуги</span></a>
+    <a href="#gallery" class="nav-a"><span class="i ka">გალერეა</span><span class="i en">Gallery</span><span class="i ru">Галерея</span></a>
+    <a href="#reviews" class="nav-a"><span class="i ka">შეფასებები</span><span class="i en">Reviews</span><span class="i ru">Отзывы</span></a>
+    <a href="#faq" class="nav-a">FAQ</a>
+    <a href="#info" class="nav-a"><span class="i ka">ინფო</span><span class="i en">Info</span><span class="i ru">Инфо</span></a>
+    <a href="tel:+995579501010" class="nav-cta-btn">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.574 2.81.7A2 2 0 0122 16.92z"/></svg>
+      <span class="i ka">დარეკვა</span><span class="i en">Call</span><span class="i ru">Звонок</span>
+    </a>
+    <div class="lang-s">
+      <button class="lb on" onclick="L('ka')">KA</button>
+      <button class="lb" onclick="L('en')">EN</button>
+      <button class="lb" onclick="L('ru')">RU</button>
+    </div>
+    <div class="ham" id="ham" onclick="TM()"><span></span><span></span><span></span></div>
+  </div>
+</div></nav>
+<div class="mmenu" id="mm">
+  <a href="#services" onclick="TM()"><span class="i ka">სერვისები</span><span class="i en">Services</span><span class="i ru">Услуги</span></a>
+  <a href="#gallery" onclick="TM()"><span class="i ka">გალერეა</span><span class="i en">Gallery</span><span class="i ru">Галерея</span></a>
+  <a href="#reviews" onclick="TM()"><span class="i ka">შეფასებები</span><span class="i en">Reviews</span><span class="i ru">Отзывы</span></a>
+  <a href="#faq" onclick="TM()">FAQ</a>
+  <a href="#info" onclick="TM()"><span class="i ka">ინფო</span><span class="i en">Info</span><span class="i ru">Инфо</span></a>
+  <div style="margin-top:24px"><div class="lang-s" style="justify-content:center">
+    <button class="lb on" onclick="L('ka')">KA</button>
+    <button class="lb" onclick="L('en')">EN</button>
+    <button class="lb" onclick="L('ru')">RU</button>
+  </div></div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="aurora"><div class="blob blob-1"></div><div class="blob blob-2"></div><div class="blob blob-3"></div></div>
+  <div class="hero-bg" id="hBg"><img src="https://lh3.googleusercontent.com/gps-cs-s/AHVAwerrP7-PYcyoiU5o_LQw1USLIpP6TmSJW_DFhWcjsnXLW7HmYvYBz0-Kbpi1Jyqh3lUFQ4Ctdw9gJYLmZ5sn19r187rwAVW86IiTi_Man_Rx4Zn5h79QMl8LYQsCwy9in1E1RHH2pJDvfVAa=w800-h600-k-no" alt="Dream Dental & Aesthetic Group"></div>
+  <div class="hero-grad"></div>
+  <div class="hero-c">
+    <div class="hero-badge"><span class="hero-dot"></span><span class="i ka">სტომატოლოგიური კლინიკა</span><span class="i en">Dental Clinic</span><span class="i ru">Стоматологическая клиника</span></div>
+    <h1><span class="i ka">თქვენი ღიმილი —<br>ჩვენი <em>ხელოვნება</em></span><span class="i en">Your Smile —<br>Our <em>Craft</em></span><span class="i ru">Ваша улыбка —<br>наше <em>мастерство</em></span></h1>
+    <p class="hero-sub"><span class="i ka">6-8-10 ნიკოლოზ ბარათაშვილის ქუჩა, თბილისი</span><span class="i en">6-8-10 Nikoloz Baratashvili St., Tbilisi</span><span class="i ru">6-8-10 ул. Николоза Бараташвили, Тбилиси</span></p>
+    <!-- Google Rating -->
+    <div class="hero-rating rv">
+      <div class="hero-rating-score">4.7</div>
+      <div class="hero-rating-info">
+        <div class="hero-rating-stars">
+          <svg viewBox="0 0 20 20"><path fill="#F59E0B" d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78z"/></svg>
+          <svg viewBox="0 0 20 20"><path fill="#F59E0B" d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78z"/></svg>
+          <svg viewBox="0 0 20 20"><path fill="#F59E0B" d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78z"/></svg>
+          <svg viewBox="0 0 20 20"><path fill="#F59E0B" d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78z"/></svg>
+          <svg viewBox="0 0 20 20"><path fill="rgba(255,255,255,.15)" d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78z"/></svg>
+        </div>
+        <div class="hero-rating-count">47 <span class="i ka">შეფასება</span><span class="i en">reviews</span><span class="i ru">отзывов</span> · Google</div>
+      </div>
+    </div>
+    <div class="hero-acts">
+      <a href="tel:+995579501010" class="btn primary">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.574 2.81.7A2 2 0 0122 16.92z"/></svg>
+        579 50 10 10
+      </a>
+      <a href="https://www.google.com/maps/place/Dream+Dental+%26+Aesthetic+Group/data=!4m7!3m6!1s0x40440ce459de1c6f:0xb61cf141bfeefbe!8m2!3d41.6968658!4d44.8059267!16s%2Fg%2F1pxwsnv4b" target="_blank" rel="noopener" class="btn ghost">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span class="i ka">რუკაზე ნახვა</span><span class="i en">View on Map</span><span class="i ru">На карте</span>
+      </a>
+    </div>
+  </div>
+  <div class="hero-scroll-hint"><span class="scroll-line"></span></div>
+</section>
+
+<!-- STATS -->
+<div class="stats rv"><div class="stats-in">
+  <div class="stat"><div class="stat-n" data-count="2000">0</div><div class="stat-l"><span class="i ka">კმაყოფილი პაციენტი</span><span class="i en">Happy Patients</span><span class="i ru">Довольных пациентов</span></div></div>
+  <div class="stat"><div class="stat-n" data-count="10">0</div><div class="stat-l"><span class="i ka">წელი გამოცდილება</span><span class="i en">Years Experience</span><span class="i ru">Лет опыта</span></div></div>
+  <div class="stat"><div class="stat-n" data-count="15">0</div><div class="stat-l"><span class="i ka">სპეციალისტი</span><span class="i en">Specialists</span><span class="i ru">Специалистов</span></div></div>
+  <div class="stat"><div class="stat-n" data-count="4.7" data-decimal="true">0</div><div class="stat-l"><span class="i ka">Google რეიტინგი</span><span class="i en">Google Rating</span><span class="i ru">Рейтинг Google</span></div></div>
+</div></div>
+
+<!-- SERVICES -->
+<div class="sec" id="services">
+  <div class="rv">
+    <div class="sec-label"><span class="i ka">რას ვთავაზობთ</span><span class="i en">What We Offer</span><span class="i ru">Наши услуги</span></div>
+    <h2 class="sec-t"><span class="i ka">პროფესიონალური სერვისები</span><span class="i en">Professional Services</span><span class="i ru">Профессиональные услуги</span></h2>
+    <p class="sec-st"><span class="i ka">თანამედროვე ტექნოლოგიები და გამოცდილი გუნდი</span><span class="i en">Modern technology and an experienced team</span><span class="i ru">Современные технологии и опытная команда</span></p>
+    <div class="sec-divider"></div>
+  </div>
+  <div class="svc-g">
+    <div class="svc-c rv" style="transition-delay:0ms">
+      <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22c1.5 0 3-.5 3-2H9c0 1.5 1.5 2 3 2zM12 2a4 4 0 00-4 4c0 2 1 3 2 4.5S12 13 12 14c0-1 .5-2 2-3.5S16 8 16 6a4 4 0 00-4-4z"/><path d="M8 14h8"/><path d="M8 18h8"/></svg></div>
+      <div class="svc-n"><span class="i ka">თერაპია</span><span class="i en">Therapy</span><span class="i ru">Терапия</span></div>
+      <div class="svc-d"><span class="i ka">კბილების მკურნალობა</span><span class="i en">Tooth treatment & restoration</span><span class="i ru">Лечение и восстановление</span></div>
+    </div>
+    <div class="svc-c rv" style="transition-delay:60ms">
+      <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/></svg></div>
+      <div class="svc-n"><span class="i ka">ორთოდონტია</span><span class="i en">Orthodontics</span><span class="i ru">Ортодонтия</span></div>
+      <div class="svc-d"><span class="i ka">კბილების სწორი განლაგება</span><span class="i en">Teeth alignment solutions</span><span class="i ru">Выравнивание зубов</span></div>
+    </div>
+    <div class="svc-c rv" style="transition-delay:120ms">
+      <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg></div>
+      <div class="svc-n"><span class="i ka">იმპლანტაცია</span><span class="i en">Implants</span><span class="i ru">Имплантация</span></div>
+      <div class="svc-d"><span class="i ka">თანამედროვე იმპლანტები</span><span class="i en">Modern implant systems</span><span class="i ru">Современные имплантаты</span></div>
+    </div>
+    <div class="svc-c rv" style="transition-delay:180ms">
+      <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9.937 15.5A2 2 0 008.5 14.063l-6.135-1.582a.5.5 0 010-.962L8.5 9.937A2 2 0 009.937 8.5l1.582-6.135a.5.5 0 01.962 0L14.063 8.5A2 2 0 0015.5 9.937l6.135 1.582a.5.5 0 010 .962L15.5 14.063a2 2 0 00-1.437 1.437l-1.582 6.135a.5.5 0 01-.962 0z"/></svg></div>
+      <div class="svc-n"><span class="i ka">ესთეტიკა</span><span class="i en">Cosmetics</span><span class="i ru">Эстетика</span></div>
+      <div class="svc-d"><span class="i ka">ვინირები და გათეთრება</span><span class="i en">Veneers & whitening</span><span class="i ru">Виниры и отбеливание</span></div>
+    </div>
+    <div class="svc-c rv" style="transition-delay:240ms">
+      <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M11.562 3.266a.5.5 0 01.876 0L15.39 8.87a1 1 0 00.932.638l6.22.377a.5.5 0 01.27.872l-4.777 3.984a1 1 0 00-.324 1.003l1.507 6.07a.5.5 0 01-.746.534l-5.353-3.108a1 1 0 00-1.008 0l-5.353 3.108a.5.5 0 01-.746-.534l1.507-6.07a1 1 0 00-.324-1.003L2.312 10.757a.5.5 0 01.27-.872l6.22-.377a1 1 0 00.932-.638z"/></svg></div>
+      <div class="svc-n"><span class="i ka">ორთოპედია</span><span class="i en">Prosthetics</span><span class="i ru">Ортопедия</span></div>
+      <div class="svc-d"><span class="i ka">გვირგვინები და ხიდები</span><span class="i en">Crowns & bridges</span><span class="i ru">Коронки и мосты</span></div>
+    </div>
+    <div class="svc-c rv" style="transition-delay:300ms">
+      <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+      <div class="svc-n"><span class="i ka">ჰიგიენა</span><span class="i en">Hygiene</span><span class="i ru">Гигиена</span></div>
+      <div class="svc-d"><span class="i ka">პროფესიონალური გაწმენდა</span><span class="i en">Professional cleaning</span><span class="i ru">Проф. чистка</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- WHY CHOOSE US -->
+<div class="sec" style="padding-top:0">
+  <div class="rv">
+    <div class="sec-label"><span class="i ka">რატომ ჩვენ</span><span class="i en">Why Choose Us</span><span class="i ru">Почему мы</span></div>
+    <h2 class="sec-t"><span class="i ka">ნდობის მიზეზები</span><span class="i en">Reasons to Trust</span><span class="i ru">Причины доверять</span></h2>
+    <div class="sec-divider"></div>
+  </div>
+  <div class="trust-g">
+    <div class="trust-c rv" style="transition-delay:0ms">
+      <div class="trust-c-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <h3><span class="i ka">სერტიფიცირებული სპეციალისტები</span><span class="i en">Certified Specialists</span><span class="i ru">Сертифицированные специалисты</span></h3>
+      <p><span class="i ka">საერთაშორისო სტანდარტების შესაბამისი კვალიფიკაცია</span><span class="i en">Internationally certified qualifications and training</span><span class="i ru">Квалификация международного стандарта</span></p>
+    </div>
+    <div class="trust-c rv" style="transition-delay:80ms">
+      <div class="trust-c-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19.875 6.27A3 3 0 0122 9.09v7.01a3 3 0 01-2.614 2.975l-8 1A3 3 0 018 17.076V5.08a3 3 0 013.386-2.975z"/><path d="M2 5v14"/><path d="M5 5v14"/></svg></div>
+      <h3><span class="i ka">თანამედროვე აღჭურვილობა</span><span class="i en">Modern Equipment</span><span class="i ru">Современное оборудование</span></h3>
+      <p><span class="i ka">უახლესი ტექნოლოგიები დიაგნოსტიკისა და მკურნალობისთვის</span><span class="i en">Latest technology for diagnostics and treatment</span><span class="i ru">Новейшие технологии диагностики и лечения</span></p>
+    </div>
+    <div class="trust-c rv" style="transition-delay:160ms">
+      <div class="trust-c-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+      <h3><span class="i ka">მოქნილი გრაფიკი</span><span class="i en">Flexible Hours</span><span class="i ru">Гибкий график</span></h3>
+      <p><span class="i ka">ვმუშაობთ კვირაში 7 დღე თქვენი მოხერხებულობისთვის</span><span class="i en">Open 7 days a week for your convenience</span><span class="i ru">Работаем 7 дней в неделю для вашего удобства</span></p>
+    </div>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<div class="gal-sec" id="gallery">
+  <div class="gal-header rv">
+    <div>
+      <div class="sec-label"><span class="i ka">გალერეა</span><span class="i en">Gallery</span><span class="i ru">Галерея</span></div>
+      <h2 class="sec-t"><span class="i ka">ჩვენი კლინიკა</span><span class="i en">Our Clinic</span><span class="i ru">Наша клиника</span></h2>
+    </div>
+    <div class="gal-nav">
+      <button class="gal-nav-btn" onclick="galScroll(-1)" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <button class="gal-nav-btn" onclick="galScroll(1)" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+    </div>
+  </div>
+  <div class="gal-track" id="galTrack">
+    <div class="gal-card"><img src="https://lh3.googleusercontent.com/gps-cs-s/AHVAwerrP7-PYcyoiU5o_LQw1USLIpP6TmSJW_DFhWcjsnXLW7HmYvYBz0-Kbpi1Jyqh3lUFQ4Ctdw9gJYLmZ5sn19r187rwAVW86IiTi_Man_Rx4Zn5h79QMl8LYQsCwy9in1E1RHH2pJDvfVAa=w800-h600-k-no" alt="Dream Dental & Aesthetic Group" loading="lazy"></div>
+    <div class="gal-card"><img src="https://lh3.googleusercontent.com/p/AF1QipMnwRDro-R4PuKB2F2XWysspf_4O7pjaLNLoNFP=w800-h600-k-no" alt="Dream Dental & Aesthetic Group" loading="lazy"></div>
+    <div class="gal-card"><img src="https://lh3.googleusercontent.com/p/AF1QipMsjaG0ccTXVbC-JbFbBokm7YoY9MW5d6nNZ18x=w800-h600-k-no" alt="Dream Dental & Aesthetic Group" loading="lazy"></div>
+    <div class="gal-card"><img src="https://lh3.googleusercontent.com/p/AF1QipMC6WjiwuPDEpxdQq6PkDNgJp1spiS72NpZV4m3=w800-h600-k-no" alt="Dream Dental & Aesthetic Group" loading="lazy"></div>
+    <div class="gal-card"><img src="https://lh3.googleusercontent.com/gps-cs-s/AHVAwepcI6pdTUByHLjZSd2Gp_sNrFXn-e6N5I4vV0uk6AZOgRiT9MRcGfWn2CILTxggOWFAE1Yj-y5_RcrfobyVDbQheQxLrGit1VNrtOPtHkrnje2O0AuSto0L8P-Xo8ZEQNt0garZ=w800-h600-k-no" alt="Dream Dental & Aesthetic Group" loading="lazy"></div>
+    <div class="gal-card"><img src="https://lh3.googleusercontent.com/gps-cs-s/AHVAweqWgEHtrYtaipf3SoFZitgYFKteiHwg4GjOl6QlHzNGx0kTmVhjgVde6hqKxgA7jZt0tMiMc80zqnzsQxVYuGTpB92ZLs1L4AIn8buCPLOHtxq5VDwO8Fv5kTx_UtZlb9w1LRIMTQ=w800-h600-k-no" alt="Dream Dental & Aesthetic Group" loading="lazy"></div>
+  </div>
+</div>
+
+<!-- REVIEWS -->
+<div class="rev-sec" id="reviews">
+  <div style="max-width:1200px;margin:0 auto">
+    <div class="rev-header">
+      <div class="rv">
+        <div class="sec-label"><span class="i ka">შეფასებები</span><span class="i en">Reviews</span><span class="i ru">Отзывы</span></div>
+        <h2 class="sec-t"><span class="i ka">კლიენტების აზრი</span><span class="i en">Client Opinions</span><span class="i ru">Мнения клиентов</span></h2>
+        <div class="sec-divider"></div>
+      </div>
+      <div class="rev-google-badge rv">
+        <svg class="g-icon" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        <div>
+          <div class="rev-google-score">4.7</div>
+          <div class="rev-google-stars">
+            <svg width="14" height="14" viewBox="0 0 20 20"><path fill="#F59E0B" d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78z"/></svg><svg width="14" height="14" viewBox="0 0 20 20"><path fill="#F59E0B" d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78z"/></svg><svg width="14" height="14" viewBox="0 0 20 20"><path fill="#F59E0B" d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78z"/></svg><svg width="14" height="14" viewBox="0 0 20 20"><path fill="#F59E0B" d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78z"/></svg><svg width="14" height="14" viewBox="0 0 20 20"><path fill="rgba(255,255,255,.15)" d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78z"/></svg>
+          </div>
+          <div class="rev-google-count">47 <span class="i ka">შეფასება</span><span class="i en">reviews</span><span class="i ru">отзывов</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="rev-g">
+      <div class="rev-c rv" style="transition-delay:0ms">
+        <span class="quote">&ldquo;</span>
+        <div class="rev-top">
+          <div class="rev-av">T</div>
+          <div><div class="rev-nm">Tamar Gervais</div><div class="rev-dt">4 თვის წინ</div></div>
+          <span class="rev-stars"><svg width="14" height="14" viewBox="0 0 20 20"><path fill="#F59E0B" d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78z"/></svg><svg width="14" height="14" viewBox="0 0 20 20"><path fill="#F59E0B" d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78z"/></svg><svg width="14" height="14" viewBox="0 0 20 20"><path fill="#F59E0B" d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78z"/></svg><svg width="14" height="14" viewBox="0 0 20 20"><path fill="#F59E0B" d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78z"/></svg><svg width="14" height="14" viewBox="0 0 20 20"><path fill="#F59E0B" d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78z"/></svg></span>
+        </div>
+        <p class="rev-txt">ძალიან დიდი მადლობა Dream Dental & Aesthetic-ის პროფესიონალთა გუნდს. უდიდესი რეკომენდაცია ჩემგან ამ კლინიკას. მადლობა ადმინისტრატორ ნათიას და უდიდესი მადლობა ბაჩო ექიმს, რომლის პროფესიონალიზმი და საოცარი გულისხმიერი დამოკიდუბულება ყველა პაციენტს სასიამოვნოდ გააოცებს</p>
+      </div>
+      <div class="rev-c rv" style="transition-delay:80ms">
+        <span class="quote">&ldquo;</span>
+        <div class="rev-top">
+          <div class="rev-av">L</div>
+          <div><div class="rev-nm">Luka Phanchulidze</div><div class="rev-dt">ერთი თვის წინ</div></div>
+          <span class="rev-stars"><svg width="14" height="14" viewBox="0 0 20 20"><path fill="#F59E0B" d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78z"/></svg><svg width="14" height="14" viewBox="0 0 20 20"><path fill="#F59E0B" d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78z"/></svg><svg width="14" height="14" viewBox="0 0 20 20"><path fill="#F59E0B" d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78z"/></svg><svg width="14" height="14" viewBox="0 0 20 20"><path fill="#F59E0B" d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78z"/></svg><svg width="14" height="14" viewBox="0 0 20 20"><path fill="#F59E0B" d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78z"/></svg></span>
+        </div>
+        <p class="rev-txt">დღეს ვიყავი Dream Dental & Aesthetic Group-ში კბილების გაწმენდასთან დაკავშირებით და მინდა გითხრათ, რომ ძალიან კმაყოფილი დავრჩი. პროფესიონალი და ყურადღებიანი გუნდი, სუფთა გარემო და მშვიდი ატმოსფერო.</p>
+      </div>
+      <div class="rev-c rv" style="transition-delay:160ms">
+        <span class="quote">&ldquo;</span>
+        <div class="rev-top">
+          <div class="rev-av">V</div>
+          <div><div class="rev-nm">v4mP</div><div class="rev-dt">3 კვირის წინ</div></div>
+          <span class="rev-stars"><svg width="14" height="14" viewBox="0 0 20 20"><path fill="#F59E0B" d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78z"/></svg><svg width="14" height="14" viewBox="0 0 20 20"><path fill="#F59E0B" d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78z"/></svg><svg width="14" height="14" viewBox="0 0 20 20"><path fill="#F59E0B" d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78z"/></svg><svg width="14" height="14" viewBox="0 0 20 20"><path fill="#F59E0B" d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78z"/></svg><svg width="14" height="14" viewBox="0 0 20 20"><path fill="#F59E0B" d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78z"/></svg></span>
+        </div>
+        <p class="rev-txt">ძალიან კმაყოფილი ვარ კლინიკის მომსახურეობით, სტაფით და სისუფთავით. მადლობა კვალიფიციურ ექიმებს და ადმინისტრატირებს ანანოს და ნინის. ვუწევ რეკომენდაციას დრიმ დენტალ გრუფს!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="sec" id="faq">
+  <div class="rv">
+    <div class="sec-label">FAQ</div>
+    <h2 class="sec-t"><span class="i ka">ხშირად დასმული კითხვები</span><span class="i en">Frequently Asked Questions</span><span class="i ru">Часто задаваемые вопросы</span></h2>
+    <div class="sec-divider"></div>
+  </div>
+  <div class="faq-list" data-l="ka">
+    <div class="faq-item rv" style="transition-delay:0ms">
+      <div class="faq-q" onclick="TF(this)"><span>უფასოა პირველადი კონსულტაცია?</span><svg class="faq-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+      <div class="faq-a"><div class="faq-a-in">დიახ, პირველადი კონსულტაცია და დიაგნოსტიკა სრულიად უფასოა.</div></div>
+    </div>
+    <div class="faq-item rv" style="transition-delay:50ms">
+      <div class="faq-q" onclick="TF(this)"><span>რა გადახდის მეთოდებს იღებთ?</span><svg class="faq-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+      <div class="faq-a"><div class="faq-a-in">ვიღებთ ნაღდ ანგარიშსწორებას, Visa/MasterCard ბარათებს, მობილურ NFC გადახდებს და განვადებას.</div></div>
+    </div>
+    <div class="faq-item rv" style="transition-delay:100ms">
+      <div class="faq-q" onclick="TF(this)"><span>რამდენ ხანს სჭირდება იმპლანტაცია?</span><svg class="faq-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+      <div class="faq-a"><div class="faq-a-in">იმპლანტაციის სრული პროცესი 3-6 თვე გრძელდება. თავად პროცედურა 1-2 საათი მიმდინარეობს.</div></div>
+    </div>
+    <div class="faq-item rv" style="transition-delay:150ms">
+      <div class="faq-q" onclick="TF(this)"><span>მუშაობთ შაბათ-კვირას?</span><svg class="faq-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+      <div class="faq-a"><div class="faq-a-in">დიახ, ვმუშაობთ კვირაში 7 დღე, შაბათ-კვირის ჩათვლით.</div></div>
+    </div>
+  </div>
+  <div class="faq-list" data-l="en">
+    <div class="faq-item rv" style="transition-delay:0ms">
+      <div class="faq-q" onclick="TF(this)"><span>Is the first consultation free?</span><svg class="faq-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+      <div class="faq-a"><div class="faq-a-in">Yes, the initial consultation and diagnostics are completely free.</div></div>
+    </div>
+    <div class="faq-item rv" style="transition-delay:50ms">
+      <div class="faq-q" onclick="TF(this)"><span>What payment methods do you accept?</span><svg class="faq-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+      <div class="faq-a"><div class="faq-a-in">We accept cash, Visa/MasterCard, mobile NFC payments, and installment plans.</div></div>
+    </div>
+    <div class="faq-item rv" style="transition-delay:100ms">
+      <div class="faq-q" onclick="TF(this)"><span>How long does implantation take?</span><svg class="faq-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+      <div class="faq-a"><div class="faq-a-in">The full implantation process takes 3-6 months. The procedure itself lasts 1-2 hours.</div></div>
+    </div>
+    <div class="faq-item rv" style="transition-delay:150ms">
+      <div class="faq-q" onclick="TF(this)"><span>Do you work on weekends?</span><svg class="faq-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+      <div class="faq-a"><div class="faq-a-in">Yes, we are open 7 days a week, including weekends.</div></div>
+    </div>
+  </div>
+  <div class="faq-list" data-l="ru">
+    <div class="faq-item rv" style="transition-delay:0ms">
+      <div class="faq-q" onclick="TF(this)"><span>Бесплатна ли первичная консультация?</span><svg class="faq-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+      <div class="faq-a"><div class="faq-a-in">Да, первичная консультация и диагностика полностью бесплатны.</div></div>
+    </div>
+    <div class="faq-item rv" style="transition-delay:50ms">
+      <div class="faq-q" onclick="TF(this)"><span>Какие способы оплаты принимаете?</span><svg class="faq-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+      <div class="faq-a"><div class="faq-a-in">Наличные, Visa/MasterCard, мобильные NFC-платежи и рассрочка.</div></div>
+    </div>
+    <div class="faq-item rv" style="transition-delay:100ms">
+      <div class="faq-q" onclick="TF(this)"><span>Сколько длится имплантация?</span><svg class="faq-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+      <div class="faq-a"><div class="faq-a-in">Полный процесс — 3-6 месяцев. Сама процедура — 1-2 часа.</div></div>
+    </div>
+    <div class="faq-item rv" style="transition-delay:150ms">
+      <div class="faq-q" onclick="TF(this)"><span>Работаете ли вы по выходным?</span><svg class="faq-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+      <div class="faq-a"><div class="faq-a-in">Да, мы работаем 7 дней в неделю, включая выходные.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- HOURS & CONTACT -->
+<div class="sec" id="info">
+  <div class="rv">
+    <div class="sec-label"><span class="i ka">ინფორმაცია</span><span class="i en">Information</span><span class="i ru">Информация</span></div>
+    <h2 class="sec-t"><span class="i ka">სამუშაო საათები & კონტაქტი</span><span class="i en">Hours & Contact</span><span class="i ru">Часы и контакт</span></h2>
+    <div class="sec-divider"></div>
+  </div>
+  <div class="info-grid">
+    <div class="rv-l">
+      <div class="hrs-table">
+        <div class="hrs-row"><span class="hrs-day"><span class="i ka">ორშაბათი</span><span class="i en">Mon</span><span class="i ru">Пн</span></span><span class="hrs-time">10AM–10PM</span></div>
+        <div class="hrs-row"><span class="hrs-day"><span class="i ka">სამშაბათი</span><span class="i en">Tue</span><span class="i ru">Вт</span></span><span class="hrs-time">10AM–10PM</span></div>
+        <div class="hrs-row"><span class="hrs-day"><span class="i ka">ოთხშაბათი</span><span class="i en">Wed</span><span class="i ru">Ср</span></span><span class="hrs-time">10AM–10PM</span></div>
+        <div class="hrs-row"><span class="hrs-day"><span class="i ka">ხუთშაბათი</span><span class="i en">Thu</span><span class="i ru">Чт</span></span><span class="hrs-time">10AM–10PM</span></div>
+        <div class="hrs-row"><span class="hrs-day"><span class="i ka">პარასკევი</span><span class="i en">Fri</span><span class="i ru">Пт</span></span><span class="hrs-time">10AM–10PM</span></div>
+        <div class="hrs-row"><span class="hrs-day"><span class="i ka">შაბათი</span><span class="i en">Sat</span><span class="i ru">Сб</span></span><span class="hrs-time">10AM–10PM</span></div>
+        <div class="hrs-row"><span class="hrs-day"><span class="i ka">კვირა</span><span class="i en">Sun</span><span class="i ru">Вс</span></span><span class="hrs-time">10AM–10PM</span></div>
+      </div>
+      <!-- Map -->
+      <div class="map-wrap">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2978.5!2d44.8059267!3d41.6968658!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40440ce459de1c6f%3A0xb61cf141bfeefbe!2sDream%20Dental%20%26%20Aesthetic%20Group!5e0!3m2!1sen!2sge!4v1" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map"></iframe>
+        <div class="map-overlay"></div>
+      </div>
+    </div>
+    <div class="contact-stack rv-r">
+      <a href="tel:+995579501010" class="c-card">
+        <div class="c-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.574 2.81.7A2 2 0 0122 16.92z"/></svg></div>
+        <div><div class="c-label"><span class="i ka">ტელეფონი</span><span class="i en">Phone</span><span class="i ru">Телефон</span></div><div class="c-val">579 50 10 10</div></div>
+      </a>
+      <a href="https://www.google.com/maps/place/Dream+Dental+%26+Aesthetic+Group/data=!4m7!3m6!1s0x40440ce459de1c6f:0xb61cf141bfeefbe!8m2!3d41.6968658!4d44.8059267!16s%2Fg%2F1pxwsnv4b" target="_blank" rel="noopener" class="c-card">
+        <div class="c-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div><div class="c-label"><span class="i ka">მისამართი</span><span class="i en">Address</span><span class="i ru">Адрес</span></div><div class="c-val-s">6-8-10 ნიკოლოზ ბარათაშვილის ქუჩა, თბილისი</div></div>
+      </a>
+      <div class="c-card">
+        <div class="c-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+        <div><div class="c-label"><span class="i ka">გადახდა</span><span class="i en">Payments</span><span class="i ru">Оплата</span></div><div class="pay-row"><span class="pay-pill">მობილური NFC გადახდები</span><span class="pay-pill">სადებეტო ბარათები</span><span class="pay-pill">საკრედიტო ბარათები</span></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BEFORE/AFTER RIBBON -->
+<div class="ribbon">
+  <div class="ribbon-in rv">
+    <div class="ribbon-text">
+      <div class="sec-label"><span class="i ka">ტრანსფორმაცია</span><span class="i en">Transformation</span><span class="i ru">Трансформация</span></div>
+      <h2 class="sec-t" style="font-size:clamp(24px,3vw,40px)"><span class="i ka">ვებგვერდის გარეშე → პრემიუმ ონლაინ</span><span class="i en">No Website → Premium Online</span><span class="i ru">Без сайта → Премиум онлайн</span></h2>
+      <p class="sec-st" style="margin-top:16px"><span class="i ka">ჩვენ ვაქცევთ Google Maps-ის ლისტინგს სრულფასოვან ვებგვერდად, რომელიც მუშაობს 24/7.</span><span class="i en">We transform your Google Maps listing into a full website that works 24/7.</span><span class="i ru">Мы превращаем ваш профиль Google Maps в полноценный сайт, который работает 24/7.</span></p>
+    </div>
+    <div class="ribbon-visual">
+      <div class="ribbon-box before">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span><span class="i ka">Google Maps-ის ლისტინგი</span><span class="i en">Google Maps Listing</span><span class="i ru">Профиль Google Maps</span></span>
+      </div>
+      <div class="ribbon-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></div>
+      <div class="ribbon-box after"><img src="https://lh3.googleusercontent.com/gps-cs-s/AHVAwerrP7-PYcyoiU5o_LQw1USLIpP6TmSJW_DFhWcjsnXLW7HmYvYBz0-Kbpi1Jyqh3lUFQ4Ctdw9gJYLmZ5sn19r187rwAVW86IiTi_Man_Rx4Zn5h79QMl8LYQsCwy9in1E1RHH2pJDvfVAa=w800-h600-k-no" alt="Website preview"></div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta">
+  <div class="aurora"><div class="blob blob-1"></div><div class="blob blob-2" style="animation-duration:20s"></div></div>
+  <div class="cta-in rv">
+    <div class="sec-label" style="justify-content:center">DEMO</div>
+    <h2><span class="i ka">გსურთ <em>ასეთი</em> ვებგვერდი?</span><span class="i en">Want a website <em>like this</em>?</span><span class="i ru">Хотите <em>такой</em> сайт?</span></h2>
+    <p><span class="i ka">ეს არის თქვენი ბიზნესის სადემონსტრაციო ვებგვერდი. ჩვენ შევქმნით და განვათავსებთ მას — სწრაფად, პროფესიონალურად და ხელმისაწვდომ ფასად.</span><span class="i en">This is a demo of your business website. We'll build and host it — quickly, professionally, and affordably.</span><span class="i ru">Это демо вашего сайта. Мы создадим и разместим его — быстро, профессионально и доступно.</span></p>
+    <div class="cta-acts">
+      <a href="tel:+995XXXXXXXXX" class="btn primary">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.574 2.81.7A2 2 0 0122 16.92z"/></svg>
+        <span class="i ka">დაგვირეკეთ</span><span class="i en">Call Us</span><span class="i ru">Позвоните</span>
+      </a>
+      <a href="mailto:info@example.com" class="btn ghost">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+        info@example.com
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FLOATING CTA -->
+<div class="float-cta">
+  <a href="tel:+995579501010" class="float-cta-btn" aria-label="Call">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.574 2.81.7A2 2 0 0122 16.92z"/></svg>
+  </a>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-in">
+    <div class="footer-l">
+      <div class="footer-brand">Dream Dental & Aesthetic Group</div>
+      <div class="footer-copy">&copy; 2026 Dream Dental & Aesthetic Group</div>
+    </div>
+    <div class="footer-links">
+      <a href="#services"><span class="i ka">სერვისები</span><span class="i en">Services</span><span class="i ru">Услуги</span></a>
+      <a href="#reviews"><span class="i ka">შეფასებები</span><span class="i en">Reviews</span><span class="i ru">Отзывы</span></a>
+      <a href="#faq">FAQ</a>
+      <a href="#info"><span class="i ka">კონტაქტი</span><span class="i en">Contact</span><span class="i ru">Контакт</span></a>
+    </div>
+    <div class="footer-built"><span class="i ka">შექმნილია</span><span class="i en">Built by</span><span class="i ru">Создано</span> <a href="https://example.com" target="_blank" rel="noopener">WebBuild Georgia</a></div>
+  </div>
+</footer>
+
+<script>
+// Language
+function L(l){document.body.className=l;document.querySelectorAll('.lb').forEach(b=>b.classList.toggle('on',b.textContent.trim().toLowerCase()===l))}
+// Mobile menu
+function TM(){const m=document.getElementById('mm'),h=document.getElementById('ham');m.classList.toggle('open');h.classList.toggle('open');document.body.style.overflow=m.classList.contains('open')?'hidden':''}
+// FAQ
+function TF(el){const it=el.parentElement,was=it.classList.contains('open');it.parentElement.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));if(!was)it.classList.add('open')}
+// Nav scroll
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',scrollY>60)},{passive:true});
+// Progress bar
+const prog=document.getElementById('prog');
+window.addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-innerHeight;prog.style.width=(scrollY/h*100)+'%'},{passive:true});
+// Parallax hero
+const hBg=document.getElementById('hBg');
+let pTick=false;
+window.addEventListener('scroll',()=>{if(!pTick){requestAnimationFrame(()=>{if(scrollY<innerHeight*1.5){const r=scrollY/innerHeight;hBg.style.transform='translateY('+scrollY*.25+'px) scale('+(1+r*.05)+')'}pTick=false});pTick=true}},{passive:true});
+// Cursor glow
+const glow=document.getElementById('glow');
+document.addEventListener('mousemove',e=>{glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px'});
+// Scroll reveal
+const rvEls=document.querySelectorAll('.rv,.rv-l,.rv-r,.rv-s');
+if('IntersectionObserver' in window){const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('v');obs.unobserve(e.target)}})},{threshold:.08,rootMargin:'0px 0px -50px 0px'});rvEls.forEach(el=>obs.observe(el))}else rvEls.forEach(el=>el.classList.add('v'));
+// Gallery
+const gt=document.getElementById('galTrack');
+function galScroll(dir){if(gt){const w=gt.querySelector('.gal-card')?.offsetWidth||400;gt.scrollBy({left:dir*(w+16),behavior:'smooth'})}}
+if(gt){let isDown=false,startX,scrollLeft;
+gt.addEventListener('mousedown',e=>{isDown=true;startX=e.pageX-gt.offsetLeft;scrollLeft=gt.scrollLeft});
+gt.addEventListener('mouseleave',()=>isDown=false);
+gt.addEventListener('mouseup',()=>isDown=false);
+gt.addEventListener('mousemove',e=>{if(!isDown)return;e.preventDefault();const x=e.pageX-gt.offsetLeft;gt.scrollLeft=scrollLeft-(x-startX)*1.5})}
+// Animated counters
+function animateCounters(){document.querySelectorAll('[data-count]').forEach(el=>{const target=parseFloat(el.dataset.count);const isDecimal=el.dataset.decimal==='true';const suffix=target>=100?'+':target>=10?'+':'';const duration=1800;const start=performance.now();function update(now){const elapsed=now-start;const progress=Math.min(elapsed/duration,1);const eased=1-Math.pow(1-progress,4);const current=eased*target;if(isDecimal){el.textContent=current.toFixed(1)}else{el.textContent=Math.floor(current)+suffix}if(progress<1)requestAnimationFrame(update)}requestAnimationFrame(update)})}
+const statsEl=document.querySelector('.stats');
+if(statsEl&&'IntersectionObserver' in window){let counted=false;const cObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&!counted){counted=true;animateCounters();cObs.unobserve(e.target)}})},{threshold:.3});cObs.observe(statsEl)}
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',function(e){const t=document.querySelector(this.getAttribute('href'));if(t){e.preventDefault();window.scrollTo({top:t.getBoundingClientRect().top+scrollY-80,behavior:'smooth'})}})});
+</script>
+</body>
+</html>

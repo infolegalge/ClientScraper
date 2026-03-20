@@ -1,0 +1,506 @@
+#!/usr/bin/env node
+const fs=require('fs'),path=require('path');
+
+const CTA={phone:'+995 XXX XX XX XX',email:'info@example.com',url:'https://example.com',brand:'WebBuild Georgia'};
+
+const PROFILES={'სტომატოლოგიური კლინიკა':{
+  names:{ka:'სტომატოლოგიური კლინიკა',en:'Dental Clinic',ru:'Стоматологическая клиника'},
+  services:{
+    ka:['თერაპია','ორთოდონტია','იმპლანტაცია','ესთეტიკა','ორთოპედია','ჰიგიენა'],
+    en:['Therapy','Orthodontics','Implants','Cosmetics','Prosthetics','Hygiene'],
+    ru:['Терапия','Ортодонтия','Имплантация','Эстетика','Ортопедия','Гигиена'],
+    icons:['🦷','😁','🔩','✨','👑','🪥'],
+    desc:{
+      ka:['კბილების მკურნალობა','კბილების სწორი განლაგება','თანამედროვე იმპლანტები','ვინირები და გათეთრება','გვირგვინები და ხიდები','პროფესიონალური გაწმენდა'],
+      en:['Tooth treatment & restoration','Teeth alignment solutions','Modern implant systems','Veneers & whitening','Crowns & bridges','Professional cleaning'],
+      ru:['Лечение и восстановление','Выравнивание зубов','Современные имплантаты','Виниры и отбеливание','Коронки и мосты','Проф. чистка'],
+    }
+  },
+  heroLine:{ka:'თქვენი ღიმილი —\nჩვენი ხელოვნება',en:'Your Smile —\nOur Craft',ru:'Ваша улыбка —\nнаше мастерство'},
+  stats:[
+    {n:'2000+',ka:'კმაყოფილი პაციენტი',en:'Happy Patients',ru:'Довольных пациентов'},
+    {n:'10+',ka:'წელი გამოცდილება',en:'Years Experience',ru:'Лет опыта'},
+    {n:'15+',ka:'სპეციალისტი',en:'Specialists',ru:'Специалистов'},
+    {n:'4.7',ka:'Google რეიტინგი',en:'Google Rating',ru:'Рейтинг Google'},
+  ],
+  faq:{
+    ka:[{q:'უფასოა პირველადი კონსულტაცია?',a:'დიახ, პირველადი კონსულტაცია და დიაგნოსტიკა სრულიად უფასოა.'},{q:'რა გადახდის მეთოდებს იღებთ?',a:'ვიღებთ ნაღდ ანგარიშსწორებას, Visa/MasterCard ბარათებს, მობილურ NFC გადახდებს და განვადებას.'},{q:'რამდენ ხანს სჭირდება იმპლანტაცია?',a:'იმპლანტაციის სრული პროცესი 3-6 თვე გრძელდება. თავად პროცედურა 1-2 საათი მიმდინარეობს.'},{q:'მუშაობთ შაბათ-კვირას?',a:'დიახ, ვმუშაობთ კვირაში 7 დღე, შაბათ-კვირის ჩათვლით.'}],
+    en:[{q:'Is the first consultation free?',a:'Yes, the initial consultation and diagnostics are completely free.'},{q:'What payment methods do you accept?',a:'We accept cash, Visa/MasterCard, mobile NFC payments, and installment plans.'},{q:'How long does implantation take?',a:'The full implantation process takes 3-6 months. The procedure itself lasts 1-2 hours.'},{q:'Do you work on weekends?',a:'Yes, we are open 7 days a week, including weekends.'}],
+    ru:[{q:'Бесплатна ли первичная консультация?',a:'Да, первичная консультация и диагностика полностью бесплатны.'},{q:'Какие способы оплаты принимаете?',a:'Наличные, Visa/MasterCard, мобильные NFC-платежи и рассрочка.'},{q:'Сколько длится имплантация?',a:'Полный процесс — 3-6 месяцев. Сама процедура — 1-2 часа.'},{q:'Работаете ли вы по выходным?',a:'Да, мы работаем 7 дней в неделю, включая выходные.'}],
+  },
+}};
+
+const GD={'ორშაბათი':{en:'Mon',ru:'Пн',o:0},'სამშაბათი':{en:'Tue',ru:'Вт',o:1},'ოთხშაბათი':{en:'Wed',ru:'Ср',o:2},'ხუთშაბათი':{en:'Thu',ru:'Чт',o:3},'პარასკევი':{en:'Fri',ru:'Пт',o:4},'შაბათი':{en:'Sat',ru:'Сб',o:5},'კვირა':{en:'Sun',ru:'Вс',o:6}};
+function pH(a){if(!a?.length)return[];const s=new Set(),o=[];for(const e of a)for(const[k,v]of Object.entries(GD))if(e.startsWith(k)&&!s.has(k)){s.add(k);o.push({ka:k,en:v.en,ru:v.ru,time:e.replace(k,''),o:v.o})}return o.sort((a,b)=>a.o-b.o)}
+function dedup(r){if(!r)return[];const s=new Set();return r.filter(x=>{const k=`${x.author}-${x.text?.slice(0,40)}`;if(s.has(k))return false;s.add(k);return true})}
+function gI(u,m=8){if(!u)return[];return u.filter(x=>x.startsWith('https://')&&x.includes('w800')).slice(0,m)}
+function starsHTML(n){return Array.from({length:5},(_,i)=>`<svg width="14" height="14" viewBox="0 0 20 20"><path fill="${i<Math.floor(n)?'#F59E0B':'rgba(255,255,255,0.15)'}" d="M10 1l2.39 4.84 5.34.78-3.87 3.77.91 5.32L10 13.27l-4.77 2.51.91-5.32L2.27 6.69l5.34-.78z"/></svg>`).join('')}
+
+function generate(biz){
+const p=PROFILES[biz.category]||Object.values(PROFILES)[0];
+const nm=biz.name,cat=p.names,addr=biz.address||'',phone=biz.phone||'',rating=biz.rating||0,rc=biz.reviewsCount||0;
+const imgs=gI(biz.imageUrls),revs=dedup(biz.reviews).filter(r=>r.rating>=4).slice(0,6),hrs=pH(biz.workingHours);
+const payments=[...new Set(biz.payments||[])];
+const mapsUrl=biz.googleMapsUrl||'#';
+const hero=imgs[0]||'',gallery=imgs.slice(0,6);
+
+return `<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${nm}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&family=Noto+Sans+Georgian:wght@300;400;500;600;700;800&family=Noto+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#050508;--bg2:#0a0a0f;--bg3:#0f1015;--surface:rgba(255,255,255,.04);
+  --surface2:rgba(255,255,255,.06);--surface3:rgba(255,255,255,.08);
+  --text:#EDEDEF;--text2:#8A8F98;--text3:#5A5E66;
+  --accent:#0EA5E9;--accent2:#38BDF8;--accent-glow:rgba(14,165,233,.15);
+  --accent-glow2:rgba(56,189,248,.08);--star:#F59E0B;
+  --border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1);
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'Noto Sans','Noto Sans Georgian',system-ui,sans-serif;
+  --r:16px;--r2:24px;
+  --ease:cubic-bezier(.16,1,.3,1);--ease2:cubic-bezier(.4,0,.2,1);
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.65;overflow-x:hidden;cursor:default}
+a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
+::selection{background:var(--accent);color:#fff}
+
+/* LANG */
+.i{display:none}.i.ka{display:inline}
+body.en .i{display:none}body.en .i.en{display:inline}
+body.ru .i{display:none}body.ru .i.ru{display:inline}
+body.ka .i{display:none}body.ka .i.ka{display:inline}
+[data-l]{display:none}[data-l="ka"]{display:block}
+body.en [data-l]{display:none}body.en [data-l="en"]{display:block}
+body.ru [data-l]{display:none}body.ru [data-l="ru"]{display:block}
+body.ka [data-l]{display:none}body.ka [data-l="ka"]{display:block}
+
+/* PROGRESS BAR */
+.progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));z-index:10001;width:0;transition:width .1s linear}
+
+/* CUSTOM CURSOR GLOW */
+.cursor-glow{position:fixed;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,var(--accent-glow) 0%,transparent 70%);pointer-events:none;z-index:1;transform:translate(-50%,-50%);transition:opacity .3s;opacity:0;mix-blend-mode:screen}
+body:hover .cursor-glow{opacity:1}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:10000;padding:0 28px;transition:all .5s var(--ease)}
+.nav.scrolled{background:rgba(5,5,8,.85);backdrop-filter:blur(32px) saturate(1.6);border-bottom:1px solid var(--border)}
+.nav-in{max-width:1200px;margin:0 auto;height:72px;display:flex;align-items:center;justify-content:space-between}
+.nav-brand{font-family:var(--serif);font-weight:800;font-size:22px;letter-spacing:-.03em;color:var(--text);transition:opacity .3s}
+.nav-r{display:flex;align-items:center;gap:4px}
+.nav-a{font-size:13px;font-weight:500;color:var(--text2);padding:8px 16px;border-radius:var(--r);transition:.3s var(--ease);letter-spacing:.02em}
+.nav-a:hover{color:var(--text);background:var(--surface2)}
+.nav-cta-btn{font-size:13px;font-weight:700;color:var(--bg);background:var(--text);padding:9px 22px;border-radius:var(--r);margin-left:8px;transition:.3s var(--ease)}
+.nav-cta-btn:hover{background:var(--accent);transform:scale(1.03)}
+.lang-s{display:flex;gap:2px;background:var(--surface);border-radius:12px;padding:3px;margin-left:12px}
+.lb{padding:5px 10px;border:none;background:transparent;font-size:10.5px;font-weight:700;cursor:pointer;border-radius:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;transition:.25s var(--ease)}
+.lb.on{background:var(--surface3);color:var(--text)}
+.ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;z-index:10001}
+.ham span{width:20px;height:1.5px;background:var(--text);border-radius:1px;transition:.3s var(--ease)}
+.ham.open span:nth-child(1){transform:rotate(45deg) translate(4.5px,4.5px)}.ham.open span:nth-child(2){opacity:0}.ham.open span:nth-child(3){transform:rotate(-45deg) translate(4.5px,-4.5px)}
+.mmenu{position:fixed;inset:0;background:rgba(5,5,8,.97);backdrop-filter:blur(40px);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;opacity:0;pointer-events:none;transition:opacity .4s var(--ease)}
+.mmenu.open{opacity:1;pointer-events:auto}
+.mmenu a{font-family:var(--serif);font-size:28px;font-weight:600;color:var(--text);padding:12px 20px;transition:.3s;border-radius:var(--r)}
+.mmenu a:hover{color:var(--accent)}
+@media(max-width:768px){.nav-a,.nav-cta-btn{display:none!important}.ham{display:flex}}
+
+/* HERO */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden}
+.hero-bg{position:absolute;inset:-10%;width:120%;height:120%;will-change:transform}
+.hero-bg img{width:100%;height:100%;object-fit:cover;opacity:.25;filter:brightness(.7) contrast(1.2) saturate(.8)}
+.hero-grad{position:absolute;inset:0;background:
+  radial-gradient(ellipse at 20% 50%,rgba(14,165,233,.08) 0%,transparent 50%),
+  radial-gradient(ellipse at 80% 30%,rgba(56,189,248,.05) 0%,transparent 40%),
+  linear-gradient(to bottom,rgba(5,5,8,.3) 0%,rgba(5,5,8,.85) 60%,var(--bg) 100%)}
+
+/* Aurora ambient blobs */
+.aurora{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.12;animation:drift ease-in-out infinite}
+.blob-1{width:500px;height:500px;background:#0EA5E9;top:-10%;left:-5%;animation-duration:18s}
+.blob-2{width:400px;height:400px;background:#8B5CF6;bottom:10%;right:-5%;animation-duration:22s;animation-delay:-5s}
+.blob-3{width:350px;height:350px;background:#06B6D4;top:40%;left:30%;animation-duration:25s;animation-delay:-10s}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(40px,-30px) scale(1.1)}50%{transform:translate(-20px,40px) scale(.95)}75%{transform:translate(30px,20px) scale(1.05)}}
+
+.hero-c{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:0 28px;width:100%}
+.hero-label{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border2);background:var(--surface);padding:8px 20px;border-radius:100px;font-size:12px;font-weight:600;color:var(--text2);letter-spacing:.06em;margin-bottom:32px;backdrop-filter:blur(12px)}
+.hero-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.7)}}
+.hero h1{font-family:var(--serif);font-size:clamp(40px,7vw,88px);font-weight:900;line-height:.95;letter-spacing:-.04em;margin-bottom:28px;white-space:pre-line}
+.hero h1 em{font-style:italic;color:var(--accent);text-shadow:0 0 60px var(--accent-glow)}
+.hero-sub{color:var(--text2);font-size:17px;max-width:480px;line-height:1.7;margin-bottom:40px;font-weight:400}
+.hero-acts{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.btn-glow{display:inline-flex;align-items:center;gap:10px;padding:16px 36px;border-radius:var(--r);font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:var(--sans);transition:.35s var(--ease);position:relative;overflow:hidden}
+.btn-glow.primary{background:var(--accent);color:#fff;box-shadow:0 0 40px var(--accent-glow),0 4px 20px rgba(0,0,0,.3)}
+.btn-glow.primary:hover{transform:translateY(-2px);box-shadow:0 0 60px var(--accent-glow),0 8px 32px rgba(0,0,0,.4)}
+.btn-glow.ghost{background:transparent;color:var(--text);border:1px solid var(--border2)}
+.btn-glow.ghost:hover{background:var(--surface2);border-color:var(--accent);transform:translateY(-1px)}
+.hero-scroll-hint{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--text3);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.scroll-line{width:1px;height:48px;background:linear-gradient(to bottom,var(--accent),transparent);animation:scroll-pulse 2.5s ease-in-out infinite}
+@keyframes scroll-pulse{0%{opacity:1;transform:scaleY(1)}50%{opacity:.3;transform:scaleY(.5)}100%{opacity:1;transform:scaleY(1)}}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(32px);transition:opacity .8s var(--ease),transform .8s var(--ease)}.rv.v{opacity:1;transform:none}
+.rv-l{opacity:0;transform:translateX(-40px);transition:opacity .8s var(--ease),transform .8s var(--ease)}.rv-l.v{opacity:1;transform:none}
+.rv-r{opacity:0;transform:translateX(40px);transition:opacity .8s var(--ease),transform .8s var(--ease)}.rv-r.v{opacity:1;transform:none}
+.rv-s{opacity:0;transform:scale(.9);transition:opacity .7s var(--ease),transform .7s var(--ease)}.rv-s.v{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.rv,.rv-l,.rv-r,.rv-s{opacity:1;transform:none;transition:none}}
+
+/* SECTIONS */
+.sec{max-width:1200px;margin:0 auto;padding:120px 28px;position:relative}
+.sec-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:var(--accent);margin-bottom:12px}
+.sec-t{font-family:var(--serif);font-size:clamp(28px,4vw,52px);font-weight:800;letter-spacing:-.03em;line-height:1.05;margin-bottom:16px}
+.sec-st{font-size:15px;color:var(--text2);max-width:500px;line-height:1.7}
+.sec-divider{width:48px;height:2px;background:linear-gradient(90deg,var(--accent),transparent);margin-top:20px;margin-bottom:0}
+
+/* STATS */
+.stats{padding:80px 28px;position:relative;overflow:hidden}
+.stats::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,var(--surface),transparent)}
+.stats-in{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.stat{text-align:center;padding:32px 16px;position:relative}
+.stat::after{content:'';position:absolute;right:0;top:25%;height:50%;width:1px;background:var(--border)}
+.stat:last-child::after{display:none}
+.stat-n{font-family:var(--serif);font-size:clamp(32px,4.5vw,56px);font-weight:900;background:linear-gradient(135deg,var(--text),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1}
+.stat-l{font-size:13px;color:var(--text3);margin-top:6px;font-weight:500;letter-spacing:.02em}
+@media(max-width:600px){.stats-in{grid-template-columns:repeat(2,1fr)}.stat::after{display:none}}
+
+/* GALLERY — horizontal scroll */
+.gal-sec{padding:120px 0;overflow:hidden}
+.gal-header{max-width:1200px;margin:0 auto;padding:0 28px 48px}
+.gal-track{display:flex;gap:16px;padding:0 28px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;cursor:grab}
+.gal-track::-webkit-scrollbar{display:none}
+.gal-track:active{cursor:grabbing}
+.gal-card{flex:0 0 clamp(280px,40vw,420px);scroll-snap-align:start;border-radius:var(--r2);overflow:hidden;position:relative;aspect-ratio:4/3;transition:.4s var(--ease)}
+.gal-card:hover{transform:scale(1.02)}
+.gal-card img{width:100%;height:100%;object-fit:cover;transition:.6s var(--ease)}
+.gal-card:hover img{transform:scale(1.08);filter:brightness(1.1)}
+.gal-card::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(5,5,8,.5) 0%,transparent 40%);pointer-events:none}
+
+/* SERVICES */
+.svc-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-top:56px}
+.svc-c{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:36px 20px;text-align:center;transition:.4s var(--ease);position:relative;overflow:hidden}
+.svc-c::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,var(--accent-glow2),transparent 70%);opacity:0;transition:opacity .4s}
+.svc-c:hover{border-color:var(--accent);transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,.2)}.svc-c:hover::before{opacity:1}
+.svc-icon{font-size:36px;margin-bottom:16px;display:block;filter:grayscale(.3);transition:.3s}.svc-c:hover .svc-icon{filter:grayscale(0);transform:scale(1.15)}
+.svc-n{font-family:var(--serif);font-weight:700;font-size:15px;margin-bottom:6px}
+.svc-d{font-size:12px;color:var(--text3);line-height:1.5}
+
+/* REVIEWS */
+.rev-sec{padding:120px 28px;background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 50%,var(--bg) 100%)}
+.rev-g{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;margin-top:56px}
+.rev-c{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:32px;transition:.4s var(--ease);position:relative}
+.rev-c:hover{border-color:rgba(14,165,233,.2);box-shadow:0 0 40px var(--accent-glow2);transform:translateY(-4px)}
+.rev-c .quote{position:absolute;top:20px;right:24px;font-family:var(--serif);font-size:64px;line-height:1;color:rgba(255,255,255,.04)}
+.rev-top{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.rev-av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#8B5CF6);display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--serif);font-weight:700;font-size:18px;flex-shrink:0}
+.rev-nm{font-family:var(--serif);font-weight:700;font-size:15px}.rev-dt{font-size:11px;color:var(--text3);margin-top:2px}
+.rev-stars{margin-left:auto;display:flex;gap:1px}
+.rev-txt{font-size:13.5px;line-height:1.85;color:var(--text2);display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
+
+/* HOURS + CONTACT — split layout */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:56px;align-items:start}
+.hrs-table{width:100%}
+.hrs-row{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border);transition:.2s}
+.hrs-row:hover{padding-left:8px;border-color:var(--accent-glow)}
+.hrs-day{font-weight:600;font-size:14px}.hrs-time{color:var(--text2);font-size:14px;font-variant-numeric:tabular-nums}
+.contact-stack{display:flex;flex-direction:column;gap:12px}
+.c-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);padding:24px;transition:.35s var(--ease);display:block}
+.c-card:hover{border-color:var(--accent);box-shadow:0 0 30px var(--accent-glow2);transform:translateX(4px)}
+.c-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.12em;font-weight:700;color:var(--text3);margin-bottom:8px}
+.c-val{font-size:17px;font-weight:700;color:var(--accent)}
+.c-val-s{font-size:14px;color:var(--text2);line-height:1.5}
+.pay-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.pay-pill{font-size:10.5px;font-weight:600;color:var(--text3);background:var(--surface2);border:1px solid var(--border);padding:4px 12px;border-radius:100px}
+@media(max-width:768px){.info-grid{grid-template-columns:1fr}}
+
+/* FAQ */
+.faq-list{max-width:720px;display:flex;flex-direction:column;gap:6px;margin-top:48px}
+.faq-item{border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:.3s var(--ease)}
+.faq-item:hover{border-color:rgba(14,165,233,.2)}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:22px 28px;cursor:pointer;font-family:var(--serif);font-weight:600;font-size:15.5px;gap:16px;transition:.2s;user-select:none}
+.faq-q:hover{color:var(--accent)}
+.faq-chev{width:18px;height:18px;flex-shrink:0;transition:.35s var(--ease);color:var(--text3)}
+.faq-item.open .faq-chev{transform:rotate(180deg);color:var(--accent)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .45s var(--ease)}
+.faq-a-in{padding:0 28px 24px;font-size:14px;line-height:1.85;color:var(--text2)}
+.faq-item.open .faq-a{max-height:400px}
+
+/* BEFORE-AFTER RIBBON */
+.ribbon{padding:80px 28px;overflow:hidden}
+.ribbon-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:48px}
+.ribbon-text{flex:1}
+.ribbon-visual{flex:1;position:relative}
+.ribbon-box{border-radius:var(--r2);overflow:hidden;border:1px solid var(--border);aspect-ratio:16/10}
+.ribbon-box.before{background:var(--surface);display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:14px;text-align:center;padding:24px}
+.ribbon-arrow{font-size:32px;color:var(--accent);text-align:center;padding:8px 0}
+.ribbon-box.after{border-color:var(--accent);box-shadow:0 0 40px var(--accent-glow)}
+.ribbon-box.after img{width:100%;height:100%;object-fit:cover}
+@media(max-width:768px){.ribbon-in{flex-direction:column}}
+
+/* CTA */
+.cta{padding:120px 28px;text-align:center;position:relative;overflow:hidden}
+.cta .aurora{z-index:0}
+.cta-in{position:relative;z-index:1;max-width:640px;margin:0 auto}
+.cta h2{font-family:var(--serif);font-size:clamp(30px,5vw,56px);font-weight:900;line-height:1.05;letter-spacing:-.04em;margin-bottom:24px}
+.cta h2 em{font-style:italic;color:var(--accent)}
+.cta p{font-size:16px;color:var(--text3);line-height:1.7;margin-bottom:44px}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--border);padding:40px 28px;text-align:center}
+.footer-brand{font-family:var(--serif);font-weight:800;font-size:20px;margin-bottom:12px;letter-spacing:-.02em}
+.footer-links{display:flex;gap:24px;justify-content:center;margin-bottom:16px;flex-wrap:wrap}
+.footer-links a{font-size:13px;color:var(--text3);transition:.2s}.footer-links a:hover{color:var(--accent)}
+.footer-copy{font-size:11.5px;color:var(--text3)}
+.footer-built{margin-top:8px;font-size:11px;color:var(--text3)}
+.footer-built a{color:var(--text2);border-bottom:1px solid var(--border);transition:.2s}.footer-built a:hover{color:var(--accent);border-color:var(--accent)}
+</style>
+</head>
+<body class="ka">
+
+<div class="progress" id="prog"></div>
+<div class="cursor-glow" id="glow"></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav"><div class="nav-in">
+  <a href="#" class="nav-brand">${nm}</a>
+  <div class="nav-r">
+    <a href="#services" class="nav-a"><span class="i ka">სერვისები</span><span class="i en">Services</span><span class="i ru">Услуги</span></a>
+    <a href="#gallery" class="nav-a"><span class="i ka">გალერეა</span><span class="i en">Gallery</span><span class="i ru">Галерея</span></a>
+    <a href="#reviews" class="nav-a"><span class="i ka">შეფასებები</span><span class="i en">Reviews</span><span class="i ru">Отзывы</span></a>
+    <a href="#faq" class="nav-a">FAQ</a>
+    <a href="#info" class="nav-a"><span class="i ka">ინფო</span><span class="i en">Info</span><span class="i ru">Инфо</span></a>
+    ${phone?`<a href="tel:+995${phone.replace(/\\s/g,'')}" class="nav-cta-btn"><span class="i ka">დარეკვა</span><span class="i en">Call</span><span class="i ru">Звонок</span></a>`:''}
+    <div class="lang-s">
+      <button class="lb on" onclick="L('ka')">KA</button>
+      <button class="lb" onclick="L('en')">EN</button>
+      <button class="lb" onclick="L('ru')">RU</button>
+    </div>
+    <div class="ham" id="ham" onclick="TM()"><span></span><span></span><span></span></div>
+  </div>
+</div></nav>
+<div class="mmenu" id="mm">
+  <a href="#services" onclick="TM()"><span class="i ka">სერვისები</span><span class="i en">Services</span><span class="i ru">Услуги</span></a>
+  <a href="#gallery" onclick="TM()"><span class="i ka">გალერეა</span><span class="i en">Gallery</span><span class="i ru">Галерея</span></a>
+  <a href="#reviews" onclick="TM()"><span class="i ka">შეფასებები</span><span class="i en">Reviews</span><span class="i ru">Отзывы</span></a>
+  <a href="#faq" onclick="TM()">FAQ</a>
+  <a href="#info" onclick="TM()"><span class="i ka">ინფო</span><span class="i en">Info</span><span class="i ru">Инфо</span></a>
+  <div style="margin-top:24px"><div class="lang-s" style="justify-content:center">
+    <button class="lb on" onclick="L('ka')">KA</button>
+    <button class="lb" onclick="L('en')">EN</button>
+    <button class="lb" onclick="L('ru')">RU</button>
+  </div></div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="aurora"><div class="blob blob-1"></div><div class="blob blob-2"></div><div class="blob blob-3"></div></div>
+  <div class="hero-bg" id="hBg">${hero?`<img src="${hero}" alt="${nm}">`:`<div style="width:100%;height:100%;background:var(--bg)"></div>`}</div>
+  <div class="hero-grad"></div>
+  <div class="hero-c">
+    <div class="hero-label"><span class="hero-dot"></span><span class="i ka">${cat.ka}</span><span class="i en">${cat.en}</span><span class="i ru">${cat.ru}</span></div>
+    <h1><span class="i ka">${p.heroLine.ka.replace('\n','<br>')}</span><span class="i en">${p.heroLine.en.replace('\n','<br>')}</span><span class="i ru">${p.heroLine.ru.replace('\n','<br>')}</span></h1>
+    <p class="hero-sub"><span class="i ka">${addr}</span><span class="i en">${addr}</span><span class="i ru">${addr}</span></p>
+    <div class="hero-acts">
+      ${phone?`<a href="tel:+995${phone.replace(/\\s/g,'')}" class="btn-glow primary">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.574 2.81.7A2 2 0 0122 16.92z"/></svg>
+        ${phone}
+      </a>`:''}
+      <a href="${mapsUrl}" target="_blank" class="btn-glow ghost">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span class="i ka">რუკაზე ნახვა</span><span class="i en">View on Map</span><span class="i ru">На карте</span>
+      </a>
+    </div>
+  </div>
+  <div class="hero-scroll-hint"><span class="scroll-line"></span></div>
+</section>
+
+<!-- STATS -->
+<div class="stats rv"><div class="stats-in">
+  ${p.stats.map(s=>`<div class="stat"><div class="stat-n">${s.n}</div><div class="stat-l"><span class="i ka">${s.ka}</span><span class="i en">${s.en}</span><span class="i ru">${s.ru}</span></div></div>`).join('')}
+</div></div>
+
+<!-- SERVICES -->
+<div class="sec" id="services">
+  <div class="rv">
+    <div class="sec-label"><span class="i ka">რას ვთავაზობთ</span><span class="i en">What We Offer</span><span class="i ru">Наши услуги</span></div>
+    <h2 class="sec-t"><span class="i ka">პროფესიონალური სერვისები</span><span class="i en">Professional Services</span><span class="i ru">Профессиональные услуги</span></h2>
+    <p class="sec-st"><span class="i ka">თანამედროვე ტექნოლოგიები და გამოცდილი გუნდი</span><span class="i en">Modern technology and an experienced team</span><span class="i ru">Современные технологии и опытная команда</span></p>
+    <div class="sec-divider"></div>
+  </div>
+  <div class="svc-g">
+    ${p.services.ka.map((s,i)=>`<div class="svc-c rv" style="transition-delay:${i*60}ms">
+      <span class="svc-icon">${p.services.icons[i]}</span>
+      <div class="svc-n"><span class="i ka">${s}</span><span class="i en">${p.services.en[i]}</span><span class="i ru">${p.services.ru[i]}</span></div>
+      <div class="svc-d"><span class="i ka">${p.services.desc.ka[i]}</span><span class="i en">${p.services.desc.en[i]}</span><span class="i ru">${p.services.desc.ru[i]}</span></div>
+    </div>`).join('')}
+  </div>
+</div>
+
+<!-- GALLERY — horizontal scroll -->
+${gallery.length?`<div class="gal-sec" id="gallery">
+  <div class="gal-header rv">
+    <div class="sec-label"><span class="i ka">გალერეა</span><span class="i en">Gallery</span><span class="i ru">Галерея</span></div>
+    <h2 class="sec-t"><span class="i ka">ჩვენი კლინიკა</span><span class="i en">Our Clinic</span><span class="i ru">Наша клиника</span></h2>
+  </div>
+  <div class="gal-track" id="galTrack">
+    ${gallery.map(u=>`<div class="gal-card"><img src="${u}" alt="${nm}" loading="lazy"></div>`).join('')}
+  </div>
+</div>`:''}
+
+<!-- REVIEWS -->
+${revs.length?`<div class="rev-sec" id="reviews">
+  <div style="max-width:1200px;margin:0 auto">
+    <div class="rv">
+      <div class="sec-label"><span class="i ka">შეფასებები</span><span class="i en">Reviews</span><span class="i ru">Отзывы</span></div>
+      <h2 class="sec-t"><span class="i ka">კლიენტების აზრი</span><span class="i en">Client Opinions</span><span class="i ru">Мнения клиентов</span></h2>
+      <p class="sec-st">${rating} ★ · ${rc} <span class="i ka">შეფასება Google-ზე</span><span class="i en">reviews on Google</span><span class="i ru">отзывов на Google</span></p>
+      <div class="sec-divider"></div>
+    </div>
+    <div class="rev-g">
+      ${revs.map((r,i)=>`<div class="rev-c rv" style="transition-delay:${i*80}ms">
+        <span class="quote">"</span>
+        <div class="rev-top">
+          <div class="rev-av">${(r.author||'?')[0].toUpperCase()}</div>
+          <div><div class="rev-nm">${r.author}</div>${r.date?`<div class="rev-dt">${r.date}</div>`:''}</div>
+          <span class="rev-stars">${starsHTML(r.rating)}</span>
+        </div>
+        <p class="rev-txt">${r.text||''}</p>
+      </div>`).join('')}
+    </div>
+  </div>
+</div>`:''}
+
+<!-- FAQ -->
+${p.faq?`<div class="sec" id="faq">
+  <div class="rv">
+    <div class="sec-label">FAQ</div>
+    <h2 class="sec-t"><span class="i ka">ხშირად დასმული კითხვები</span><span class="i en">Frequently Asked Questions</span><span class="i ru">Часто задаваемые вопросы</span></h2>
+    <div class="sec-divider"></div>
+  </div>
+  ${['ka','en','ru'].map(lang=>`<div class="faq-list" data-l="${lang}">
+    ${p.faq[lang].map((f,i)=>`<div class="faq-item rv" style="transition-delay:${i*50}ms">
+      <div class="faq-q" onclick="TF(this)"><span>${f.q}</span><svg class="faq-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+      <div class="faq-a"><div class="faq-a-in">${f.a}</div></div>
+    </div>`).join('')}
+  </div>`).join('')}
+</div>`:''}
+
+<!-- HOURS & CONTACT -->
+<div class="sec" id="info">
+  <div class="rv">
+    <div class="sec-label"><span class="i ka">ინფორმაცია</span><span class="i en">Information</span><span class="i ru">Информация</span></div>
+    <h2 class="sec-t"><span class="i ka">სამუშაო საათები & კონტაქტი</span><span class="i en">Hours & Contact</span><span class="i ru">Часы и контакт</span></h2>
+    <div class="sec-divider"></div>
+  </div>
+  <div class="info-grid">
+    <div class="hrs-table rv-l">
+      ${hrs.map(h=>`<div class="hrs-row"><span class="hrs-day"><span class="i ka">${h.ka}</span><span class="i en">${h.en}</span><span class="i ru">${h.ru}</span></span><span class="hrs-time">${h.time}</span></div>`).join('')}
+    </div>
+    <div class="contact-stack rv-r">
+      ${phone?`<a href="tel:+995${phone.replace(/\\s/g,'')}" class="c-card"><div class="c-label"><span class="i ka">ტელეფონი</span><span class="i en">Phone</span><span class="i ru">Телефон</span></div><div class="c-val">${phone}</div></a>`:''}
+      ${addr?`<a href="${mapsUrl}" target="_blank" class="c-card"><div class="c-label"><span class="i ka">მისამართი</span><span class="i en">Address</span><span class="i ru">Адрес</span></div><div class="c-val-s">${addr}</div></a>`:''}
+      ${payments.length?`<div class="c-card"><div class="c-label"><span class="i ka">გადახდა</span><span class="i en">Payments</span><span class="i ru">Оплата</span></div><div class="pay-row">${payments.map(p=>`<span class="pay-pill">${p}</span>`).join('')}</div></div>`:''}
+    </div>
+  </div>
+</div>
+
+<!-- BEFORE/AFTER RIBBON -->
+<div class="ribbon">
+  <div class="ribbon-in rv">
+    <div class="ribbon-text">
+      <div class="sec-label"><span class="i ka">ტრანსფორმაცია</span><span class="i en">Transformation</span><span class="i ru">Трансформация</span></div>
+      <h2 class="sec-t" style="font-size:clamp(24px,3vw,40px)"><span class="i ka">ვებგვერდის გარეშე → პრემიუმ ონლაინ</span><span class="i en">No Website → Premium Online</span><span class="i ru">Без сайта → Премиум онлайн</span></h2>
+      <p class="sec-st" style="margin-top:16px"><span class="i ka">ჩვენ ვაქცევთ Google Maps-ის ლისტინგს სრულფასოვან ვებგვერდად, რომელიც მუშაობს 24/7.</span><span class="i en">We transform your Google Maps listing into a full website that works 24/7.</span><span class="i ru">Мы превращаем ваш профиль Google Maps в полноценный сайт, который работает 24/7.</span></p>
+    </div>
+    <div class="ribbon-visual">
+      <div class="ribbon-box before"><span class="i ka">Google Maps-ის ლისტინგი</span><span class="i en">Google Maps Listing</span><span class="i ru">Профиль Google Maps</span></div>
+      <div class="ribbon-arrow">↓</div>
+      <div class="ribbon-box after">${hero?`<img src="${hero}" alt="Website preview">`:`<div style="padding:24px;color:var(--accent);font-family:var(--serif);font-size:18px;text-align:center">Premium Website</div>`}</div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta">
+  <div class="aurora"><div class="blob blob-1"></div><div class="blob blob-2" style="animation-duration:20s"></div></div>
+  <div class="cta-in rv">
+    <div class="sec-label">DEMO</div>
+    <h2><span class="i ka">გსურთ <em>ასეთი</em> ვებგვერდი?</span><span class="i en">Want a website <em>like this</em>?</span><span class="i ru">Хотите <em>такой</em> сайт?</span></h2>
+    <p><span class="i ka">ეს არის თქვენი ბიზნესის სადემონსტრაციო ვებგვერდი. ჩვენ შევქმნით და განვათავსებთ მას — სწრაფად, პროფესიონალურად და ხელმისაწვდომ ფასად.</span><span class="i en">This is a demo of your business website. We'll build and host it — quickly, professionally, and affordably.</span><span class="i ru">Это демо вашего сайта. Мы создадим и разместим его — быстро, профессионально и доступно.</span></p>
+    <div class="cta-acts">
+      <a href="tel:${CTA.phone}" class="btn-glow primary"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.574 2.81.7A2 2 0 0122 16.92z"/></svg> <span class="i ka">დაგვირეკეთ</span><span class="i en">Call Us</span><span class="i ru">Позвоните</span></a>
+      <a href="mailto:${CTA.email}" class="btn-glow ghost">✉ ${CTA.email}</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-brand">${nm}</div>
+  <div class="footer-links">
+    <a href="#services"><span class="i ka">სერვისები</span><span class="i en">Services</span><span class="i ru">Услуги</span></a>
+    <a href="#reviews"><span class="i ka">შეფასებები</span><span class="i en">Reviews</span><span class="i ru">Отзывы</span></a>
+    <a href="#faq">FAQ</a>
+    <a href="#info"><span class="i ka">კონტაქტი</span><span class="i en">Contact</span><span class="i ru">Контакт</span></a>
+  </div>
+  <div class="footer-copy">© ${new Date().getFullYear()} ${nm}</div>
+  <div class="footer-built"><span class="i ka">შექმნილია</span><span class="i en">Built by</span><span class="i ru">Создано</span> <a href="${CTA.url}" target="_blank">${CTA.brand}</a></div>
+</footer>
+
+<script>
+// Lang
+function L(l){document.body.className=l;document.querySelectorAll('.lb').forEach(b=>b.classList.toggle('on',b.textContent.trim().toLowerCase()===l))}
+// Mobile menu
+function TM(){const m=document.getElementById('mm'),h=document.getElementById('ham');m.classList.toggle('open');h.classList.toggle('open');document.body.style.overflow=m.classList.contains('open')?'hidden':''}
+// FAQ
+function TF(el){const it=el.parentElement,was=it.classList.contains('open');it.parentElement.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));if(!was)it.classList.add('open')}
+// Nav scroll
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',scrollY>60)},{passive:true});
+// Progress bar
+const prog=document.getElementById('prog');
+window.addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-innerHeight;prog.style.width=(scrollY/h*100)+'%'},{passive:true});
+// Parallax hero
+const hBg=document.getElementById('hBg');
+let pTick=false;
+window.addEventListener('scroll',()=>{if(!pTick){requestAnimationFrame(()=>{if(scrollY<innerHeight*1.5){const r=scrollY/innerHeight;hBg.style.transform='translateY('+scrollY*.3+'px) scale('+(1+r*.06)+')'}pTick=false});pTick=true}},{passive:true});
+// Cursor glow
+const glow=document.getElementById('glow');
+document.addEventListener('mousemove',e=>{glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px'});
+// Scroll reveal
+const rvEls=document.querySelectorAll('.rv,.rv-l,.rv-r,.rv-s');
+if('IntersectionObserver' in window){const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('v');obs.unobserve(e.target)}})},{threshold:.1,rootMargin:'0px 0px -60px 0px'});rvEls.forEach(el=>obs.observe(el))}else rvEls.forEach(el=>el.classList.add('v'));
+// Gallery drag scroll
+const gt=document.getElementById('galTrack');
+if(gt){let isDown=false,startX,scrollLeft;
+gt.addEventListener('mousedown',e=>{isDown=true;startX=e.pageX-gt.offsetLeft;scrollLeft=gt.scrollLeft});
+gt.addEventListener('mouseleave',()=>isDown=false);
+gt.addEventListener('mouseup',()=>isDown=false);
+gt.addEventListener('mousemove',e=>{if(!isDown)return;e.preventDefault();const x=e.pageX-gt.offsetLeft;gt.scrollLeft=scrollLeft-(x-startX)*1.5})}
+// Smooth scroll with offset
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',function(e){const t=document.querySelector(this.getAttribute('href'));if(t){e.preventDefault();window.scrollTo({top:t.getBoundingClientRect().top+scrollY-80,behavior:'smooth'})}})});
+</script>
+</body>
+</html>`;
+}
+
+// CLI
+const inp=process.argv[2]||'input.json',out=process.argv[3]||'./output';
+if(!fs.existsSync(inp)){console.error('Not found: '+inp);process.exit(1)}
+const data=JSON.parse(fs.readFileSync(inp,'utf-8'));
+const list=Array.isArray(data)?data:[data];
+if(!fs.existsSync(out))fs.mkdirSync(out,{recursive:true});
+let g=0,s=0;
+for(const b of list){
+  if(b.analysis&&!b.analysis.needsNewWebsite){console.log('  SKIP: '+b.name);s++;continue}
+  const html=generate(b);
+  const slug=b.name.toLowerCase().replace(/[^a-z0-9\u10A0-\u10FF]+/g,'-').replace(/(^-|-$)/g,'');
+  fs.writeFileSync(path.join(out,slug+'.html'),html,'utf-8');
+  console.log('  ✓ '+slug+'.html');g++;
+}
+console.log('\\nDone: '+g+' generated, '+s+' skipped');

@@ -1,0 +1,4 @@
+node_modules/
+.DS_Store
+scraper/output/*.json
+scraper/output/*.csv
