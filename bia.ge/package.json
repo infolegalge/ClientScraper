@@ -1,0 +1,9 @@
+{
+  "name": "biage-scraper",
+  "version": "1.0.0",
+  "description": "Scraper for bia.ge Georgian business directory - all categories, subcategories & company details",
+  "main": "scraper.js",
+  "dependencies": {
+    "playwright": "^1.58.2"
+  }
+}

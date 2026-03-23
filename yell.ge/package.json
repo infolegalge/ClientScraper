@@ -1,0 +1,19 @@
+{
+  "name": "yellge-scraper",
+  "version": "1.0.0",
+  "description": "Scraper for yell.ge Georgian business directory - all categories & company details",
+  "main": "scraper.js",
+  "scripts": {
+    "scrape": "node scraper.js",
+    "scrape:categories": "node scraper.js --list-categories",
+    "scrape:category": "node scraper.js --category",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "playwright": "^1.58.2"
+  }
+}
